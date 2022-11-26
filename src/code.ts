@@ -1,0 +1,137 @@
+import API from "./api";
+
+let websocket = null;
+let pluginUUID = null;
+
+const DestinationEnum = Object.freeze({
+  HARDWARE_AND_SOFTWARE: 0,
+  HARDWARE_ONLY: 1,
+  SOFTWARE_ONLY: 2,
+});
+
+let timer;
+
+const counterAction = {
+  type: "com.dddice.counter.action",
+
+  onKeyDown: function (context, settings, coordinates, userDesiredState) {
+    timer = setTimeout(function () {
+      const updatedSettings = {};
+      updatedSettings["keyPressCounter"] = -1;
+
+      counterAction.SetSettings(context, updatedSettings);
+      counterAction.SetTitle(context, 0);
+    }, 1500);
+  },
+
+  onKeyUp: function (context, settings, coordinates, userDesiredState) {
+    clearTimeout(timer);
+
+    const api = new API('');
+    api.roll().create({dice:[{type:"d20",theme:"dddice-standard"}], room:"Jf87ISF",operator:{}});
+
+    let keyPressCounter = 0;
+    if (settings != null && settings.hasOwnProperty("keyPressCounter")) {
+      keyPressCounter = settings["keyPressCounter"];
+    }
+
+    keyPressCounter++;
+
+    const updatedSettings = {};
+    updatedSettings["keyPressCounter"] = keyPressCounter;
+
+    this.SetSettings(context, updatedSettings);
+
+    this.SetTitle(context, keyPressCounter);
+  },
+
+  onWillAppear: function (context, settings, coordinates) {
+    let keyPressCounter = 0;
+    if (settings != null && settings.hasOwnProperty("keyPressCounter")) {
+      keyPressCounter = settings["keyPressCounter"];
+    }
+
+    this.SetTitle(context, keyPressCounter);
+  },
+
+  SetTitle: function (context, keyPressCounter) {
+    const json = {
+      event: "setTitle",
+      context: context,
+      payload: {
+        title: "" + keyPressCounter,
+        target: DestinationEnum.HARDWARE_AND_SOFTWARE,
+      },
+    };
+
+    websocket.send(JSON.stringify(json));
+  },
+
+  SetSettings: function (context, settings) {
+    const json = {
+      event: "setSettings",
+      context: context,
+      payload: settings,
+    };
+
+    websocket.send(JSON.stringify(json));
+  },
+};
+
+
+(window as any).connectElgatoStreamDeckSocket = (
+  inPort,
+  inPluginUUID,
+  inRegisterEvent,
+  inInfo
+) => {
+  pluginUUID = inPluginUUID;
+
+  // Open the web socket
+  websocket = new WebSocket("ws://127.0.0.1:" + inPort);
+
+  function registerPlugin(inPluginUUID) {
+    const json = {
+      event: inRegisterEvent,
+      uuid: inPluginUUID,
+    };
+
+    websocket.send(JSON.stringify(json));
+  }
+
+  websocket.onopen = function () {
+    // WebSocket is connected, send message
+    registerPlugin(pluginUUID);
+  };
+
+  websocket.onmessage = function (evt) {
+    // Received message from Stream Deck
+    const jsonObj = JSON.parse(evt.data);
+    const event = jsonObj["event"];
+    const action = jsonObj["action"];
+    const context = jsonObj["context"];
+
+    if (event == "keyDown") {
+      const jsonPayload = jsonObj["payload"];
+      const settings = jsonPayload["settings"];
+      const coordinates = jsonPayload["coordinates"];
+      const userDesiredState = jsonPayload["userDesiredState"];
+      counterAction.onKeyDown(context, settings, coordinates, userDesiredState);
+    } else if (event == "keyUp") {
+      const jsonPayload = jsonObj["payload"];
+      const settings = jsonPayload["settings"];
+      const coordinates = jsonPayload["coordinates"];
+      const userDesiredState = jsonPayload["userDesiredState"];
+      counterAction.onKeyUp(context, settings, coordinates, userDesiredState);
+    } else if (event == "willAppear") {
+      const jsonPayload = jsonObj["payload"];
+      const settings = jsonPayload["settings"];
+      const coordinates = jsonPayload["coordinates"];
+      counterAction.onWillAppear(context, settings, coordinates);
+    }
+  };
+
+  websocket.onclose = function () {
+    // Websocket is closed
+  };
+}

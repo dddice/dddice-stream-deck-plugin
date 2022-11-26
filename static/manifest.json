@@ -1,0 +1,42 @@
+{
+  "Actions": [
+    {
+      "Icon": "actionIcon", 
+      "Name": "Roll",
+      "States": [
+        {
+          "Image": "actionDefaultImage",
+          "TitleAlignment": "middle", 
+          "FontSize": "16"
+        }
+      ], 
+      "SupportedInMultiActions": false,
+      "Tooltip": "How many times did you get pwned today? Keep track with this counter.", 
+      "UUID": "com.dddice.counter.action"
+    }
+  ], 
+  "SDKVersion": 2,
+  "Author": "dddice", 
+  "CodePath": "code.html", 
+  "Description": "Roll A Die",
+  "Name": "Roll",
+  "Icon": "pluginIcon",
+  "CategoryIcon": "categoryIcon",
+  "Category": "dddice",
+  "URL": "https://www.dddice.com/",
+  "Version": "1.4",
+  "OS": [
+    {
+        "Platform": "mac", 
+        "MinimumVersion" : "10.11"
+    },
+    {
+        "Platform": "windows", 
+        "MinimumVersion" : "10"
+    }
+  ],
+  "Software": 
+    {
+        "MinimumVersion" : "4.1"
+    }
+}
