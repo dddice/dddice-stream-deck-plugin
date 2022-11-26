@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>com.elgato.sample PI</title>
+    <link rel="stylesheet" href="css/sdpi.css" />
+  </head>
+
+  <body>
+    <div class="sdpi-wrapper">
+      <div type="select" class="sdpi-item">
+        <div class="sdpi-item-label">Roll Equation</div>
+        <input
+          type="text"
+          class="sdpi-item-value"
+          onchange="setSetting('rollEquation', event.target.value)"
+        />
+      </div>
+      <div type="select" class="sdpi-item">
+        <div class="sdpi-item-label">Dice Theme</div>
+        <input
+          type="text"
+          class="sdpi-item-value"
+          onchange="setSetting('diceTheme', event.target.value)"
+        />
+      </div>
+      <div type="select" class="sdpi-item">
+        <div class="sdpi-item-label">API Key</div>
+        <input
+          type="password"
+          class="sdpi-item-value"
+          onchange="setGlobalSetting('apiKey', event.target.value)"
+        />
+      </div>
+    </div>
+    <script>
+      // this is our global websocket, used to communicate from/to Stream Deck software
+      // and some info about our plugin, as sent by Stream Deck software
+      let websocket = null,
+        uuid = null,
+        actionInfo = {};
+      let settings = {};
+
+      function connectElgatoStreamDeckSocket(
+        inPort,
+        inUUID,
+        inRegisterEvent,
+        inInfo,
+        inActionInfo
+      ) {
+        uuid = inUUID;
+        // please note: the incoming arguments are of type STRING, so
+        // in case of the inActionInfo, we must parse it into JSON first
+        actionInfo = JSON.parse(inActionInfo); // cache the info
+        websocket = new WebSocket("ws://localhost:" + inPort);
+
+        console.log(inActionInfo);
+        settings = actionInfo?.payload?.settings;
+
+        // if connection was established, the websocket sends
+        // an 'onopen' event, where we need to register our PI
+        websocket.onopen = function () {
+          var json = {
+            event: inRegisterEvent,
+            uuid: inUUID,
+          };
+          // register property inspector to Stream Deck
+          websocket.send(JSON.stringify(json));
+        };
+      }
+
+      // our method to pass values to the plugin
+      function setSetting(key, value) {
+        console.log(`setSetting ${key}:${value}`);
+        const json = {
+          event: "setSettings",
+          context: uuid,
+          payload: { ...settings, [key]: value },
+        };
+
+        websocket.send(JSON.stringify(json));
+      }
+
+      function setGlobalSetting(key, value) {
+        console.log(`setGlobalSetting ${key}:${value}`);
+        const json = {
+          event: "setGlobalSettings",
+          context: uuid,
+          payload: { [key]: value },
+        };
+
+        websocket.send(JSON.stringify(json));
+      }
+
+      // our method to pass values to the plugin
+      function sendValueToPlugin(value, param) {
+        if (websocket) {
+          const json = {
+            action: actionInfo["action"],
+            event: "sendToPlugin",
+            context: uuid,
+            payload: {
+              [param]: value,
+            },
+          };
+          websocket.send(JSON.stringify(json));
+        }
+      }
+    </script>
+  </body>
+</html>

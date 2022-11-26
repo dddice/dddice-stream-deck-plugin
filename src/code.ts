@@ -9,10 +9,13 @@ const DestinationEnum = Object.freeze({
   SOFTWARE_ONLY: 2,
 });
 
+let API_KEY;
+
+
 let timer;
 
 const counterAction = {
-  type: "com.dddice.counter.action",
+  type: "com.dddice.quick-roll.macro",
 
   onKeyDown: function (context, settings, coordinates, userDesiredState) {
     timer = setTimeout(function () {
@@ -27,8 +30,12 @@ const counterAction = {
   onKeyUp: function (context, settings, coordinates, userDesiredState) {
     clearTimeout(timer);
 
-    const api = new API('');
-    api.roll().create({dice:[{type:"d20",theme:"dddice-standard"}], room:"Jf87ISF",operator:{}});
+    const api = new API(API_KEY);
+    api.roll().create({
+      dice: [{ type: "d20", theme: "dddice-standard" }],
+      room: "Jf87ISF",
+      operator: {},
+    });
 
     let keyPressCounter = 0;
     if (settings != null && settings.hasOwnProperty("keyPressCounter")) {
@@ -78,22 +85,34 @@ const counterAction = {
   },
 };
 
-
 (window as any).connectElgatoStreamDeckSocket = (
   inPort,
   inPluginUUID,
   inRegisterEvent,
-  inInfo
+  inInfo,
+  inActionInfo
 ) => {
   pluginUUID = inPluginUUID;
 
   // Open the web socket
   websocket = new WebSocket("ws://127.0.0.1:" + inPort);
 
+  console.log(inActionInfo);
+
   function registerPlugin(inPluginUUID) {
     const json = {
       event: inRegisterEvent,
       uuid: inPluginUUID,
+    };
+
+    websocket.send(JSON.stringify(json));
+  }
+
+  function getGlobalSettings(context) {
+    console.log("getGlobalSettings");
+    const json = {
+      event: "getGlobalSettings",
+      context: pluginUUID,
     };
 
     websocket.send(JSON.stringify(json));
@@ -107,31 +126,51 @@ const counterAction = {
   websocket.onmessage = function (evt) {
     // Received message from Stream Deck
     const jsonObj = JSON.parse(evt.data);
+    console.log(jsonObj);
     const event = jsonObj["event"];
     const action = jsonObj["action"];
     const context = jsonObj["context"];
+    console.log(`message received ${event}`);
 
-    if (event == "keyDown") {
-      const jsonPayload = jsonObj["payload"];
-      const settings = jsonPayload["settings"];
-      const coordinates = jsonPayload["coordinates"];
-      const userDesiredState = jsonPayload["userDesiredState"];
-      counterAction.onKeyDown(context, settings, coordinates, userDesiredState);
-    } else if (event == "keyUp") {
-      const jsonPayload = jsonObj["payload"];
-      const settings = jsonPayload["settings"];
-      const coordinates = jsonPayload["coordinates"];
-      const userDesiredState = jsonPayload["userDesiredState"];
-      counterAction.onKeyUp(context, settings, coordinates, userDesiredState);
-    } else if (event == "willAppear") {
-      const jsonPayload = jsonObj["payload"];
-      const settings = jsonPayload["settings"];
-      const coordinates = jsonPayload["coordinates"];
-      counterAction.onWillAppear(context, settings, coordinates);
+    switch (event) {
+      case "keyDown": {
+        const jsonPayload = jsonObj["payload"];
+        const settings = jsonPayload["settings"];
+        const coordinates = jsonPayload["coordinates"];
+        const userDesiredState = jsonPayload["userDesiredState"];
+        counterAction.onKeyDown(
+          context,
+          settings,
+          coordinates,
+          userDesiredState
+        );
+        break;
+      }
+      case "keyUp": {
+        const jsonPayload = jsonObj["payload"];
+        const settings = jsonPayload["settings"];
+        const coordinates = jsonPayload["coordinates"];
+        const userDesiredState = jsonPayload["userDesiredState"];
+        counterAction.onKeyUp(context, settings, coordinates, userDesiredState);
+        break;
+      }
+      case "willAppear": {
+        const jsonPayload = jsonObj["payload"];
+        const settings = jsonPayload["settings"];
+        const coordinates = jsonPayload["coordinates"];
+        counterAction.onWillAppear(context, settings, coordinates);
+        break;
+      }
+      case "didReceiveGlobalSettings":
+        console.log(jsonObj);
+        break;
+      case "deviceDidConnect":
+        getGlobalSettings(context);
+        break;
     }
   };
 
   websocket.onclose = function () {
     // Websocket is closed
   };
-}
+};

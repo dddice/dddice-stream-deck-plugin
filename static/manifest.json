@@ -1,42 +1,42 @@
 {
   "Actions": [
     {
-      "Icon": "actionIcon", 
-      "Name": "Roll",
+      "Icon": "actionIcon",
+      "Name": "Quick Roll Macro",
       "States": [
         {
+          "FontSize": "16",
           "Image": "actionDefaultImage",
-          "TitleAlignment": "middle", 
-          "FontSize": "16"
+          "TitleAlignment": "middle"
         }
-      ], 
+      ],
       "SupportedInMultiActions": false,
-      "Tooltip": "How many times did you get pwned today? Keep track with this counter.", 
-      "UUID": "com.dddice.counter.action"
-    }
-  ], 
-  "SDKVersion": 2,
-  "Author": "dddice", 
-  "CodePath": "code.html", 
-  "Description": "Roll A Die",
-  "Name": "Roll",
-  "Icon": "pluginIcon",
-  "CategoryIcon": "categoryIcon",
-  "Category": "dddice",
-  "URL": "https://www.dddice.com/",
-  "Version": "1.4",
-  "OS": [
-    {
-        "Platform": "mac", 
-        "MinimumVersion" : "10.11"
-    },
-    {
-        "Platform": "windows", 
-        "MinimumVersion" : "10"
+      "Tooltip": "One button press to quick roll a full dice equation",
+      "UUID": "com.dddice.quick-roll.macro"
     }
   ],
-  "Software": 
+  "Author": "dddice",
+  "Category": "dddice",
+  "CategoryIcon": "categoryIcon",
+  "CodePath": "code.html",
+  "Description": "Roll A Die",
+  "Icon": "pluginIcon",
+  "Name": "Roll",
+  "OS": [
     {
-        "MinimumVersion" : "4.1"
+      "MinimumVersion": "10.11",
+      "Platform": "mac"
+    },
+    {
+      "MinimumVersion": "10",
+      "Platform": "windows"
     }
+  ],
+  "PropertyInspectorPath": "settings.html",
+  "SDKVersion": 2,
+  "Software": {
+    "MinimumVersion": "4.1"
+  },
+  "URL": "https://www.dddice.com/",
+  "Version": "0.0.1"
 }

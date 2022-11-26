@@ -4,10 +4,14 @@
   "description": "Roll 3D digital dice from your steam deck.",
   "repository": "git@github.com:dddice/dddice-stream-deck-plugin.git",
   "author": "dddice <developers@dddice.com>",
+  "source": [
+    "src/code.html",
+    "src/settings.html"
+  ],
   "scripts": {
-    "build": "parcel build src/code.html --public-url ./",
+    "build": "parcel build --public-url ./",
     "lint": "eslint .",
-    "start": "parcel watch src/code.html --dist-dir=C:\\Users\\narmi\\AppData\\Roaming\\Elgato\\StreamDeck\\Plugins\\com.dddice.roll.sdPlugin --host localhost --public-url ./"
+    "start": "parcel watch --dist-dir=C:\\Users\\narmi\\AppData\\Roaming\\Elgato\\StreamDeck\\Plugins\\com.dddice.roll.sdPlugin --host localhost --public-url ./"
   },
   "dependencies": {
     "@dice-roller/rpg-dice-roller": "^5.2.1"
