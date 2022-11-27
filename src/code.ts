@@ -1,4 +1,5 @@
 import API from "./api";
+import { convertEquation, convertOperators } from "./rollConverter";
 
 let websocket = null;
 let pluginUUID = null;
@@ -12,7 +13,13 @@ const DestinationEnum = Object.freeze({
 let API_KEY;
 let timer;
 
-const counterAction = {
+interface ISettings {
+  rollEquation: string;
+  diceTheme: string;
+  room: string;
+}
+
+const quickRoll = {
   type: "com.dddice.quick-roll.macro",
 
   onKeyDown: function (context, settings, coordinates, userDesiredState) {
@@ -20,20 +27,25 @@ const counterAction = {
       const updatedSettings = {};
       updatedSettings["keyPressCounter"] = -1;
 
-      counterAction.SetSettings(context, updatedSettings);
-      counterAction.SetTitle(context, 0);
+      quickRoll.SetSettings(context, updatedSettings);
+      quickRoll.SetTitle(context, 0);
     }, 1500);
   },
 
-  onKeyUp: function (context, settings, coordinates, userDesiredState) {
+  onKeyUp: function (
+    context,
+    settings: ISettings,
+    coordinates,
+    userDesiredState
+  ) {
     clearTimeout(timer);
 
     console.log(`api key ${API_KEY}`);
     const api = new API(API_KEY);
     api.roll().create({
-      dice: [{ type: settings.rollEquation, theme: settings.diceTheme }],
+      dice: convertEquation(settings.rollEquation, settings.diceTheme),
       room: settings.room,
-      operator: {},
+      operator: convertOperators(settings.rollEquation),
     });
 
     /*let keyPressCounter = 0;
@@ -129,7 +141,7 @@ const counterAction = {
     const event = jsonObj["event"];
     const action = jsonObj["action"];
     const context = jsonObj["context"];
-    console.log(`message received <FK{{{ ${event}`);
+    console.log(`message received ${event}`);
 
     switch (event) {
       case "keyDown": {
@@ -137,12 +149,7 @@ const counterAction = {
         const settings = jsonPayload["settings"];
         const coordinates = jsonPayload["coordinates"];
         const userDesiredState = jsonPayload["userDesiredState"];
-        counterAction.onKeyDown(
-          context,
-          settings,
-          coordinates,
-          userDesiredState
-        );
+        quickRoll.onKeyDown(context, settings, coordinates, userDesiredState);
         break;
       }
       case "keyUp": {
@@ -152,14 +159,14 @@ const counterAction = {
         const userDesiredState = jsonPayload["userDesiredState"];
         console.log("hello");
         console.log(API_KEY);
-        counterAction.onKeyUp(context, settings, coordinates, userDesiredState);
+        quickRoll.onKeyUp(context, settings, coordinates, userDesiredState);
         break;
       }
       case "willAppear": {
         const jsonPayload = jsonObj["payload"];
         const settings = jsonPayload["settings"];
         const coordinates = jsonPayload["coordinates"];
-        counterAction.onWillAppear(context, settings, coordinates);
+        quickRoll.onWillAppear(context, settings, coordinates);
         break;
       }
       case "didReceiveGlobalSettings":
