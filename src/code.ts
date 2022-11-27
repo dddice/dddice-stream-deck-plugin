@@ -10,8 +10,6 @@ const DestinationEnum = Object.freeze({
 });
 
 let API_KEY;
-
-
 let timer;
 
 const counterAction = {
@@ -30,14 +28,15 @@ const counterAction = {
   onKeyUp: function (context, settings, coordinates, userDesiredState) {
     clearTimeout(timer);
 
+    console.log(`api key ${API_KEY}`);
     const api = new API(API_KEY);
     api.roll().create({
-      dice: [{ type: "d20", theme: "dddice-standard" }],
-      room: "Jf87ISF",
+      dice: [{ type: settings.rollEquation, theme: settings.diceTheme }],
+      room: settings.room,
       operator: {},
     });
 
-    let keyPressCounter = 0;
+    /*let keyPressCounter = 0;
     if (settings != null && settings.hasOwnProperty("keyPressCounter")) {
       keyPressCounter = settings["keyPressCounter"];
     }
@@ -49,7 +48,7 @@ const counterAction = {
 
     this.SetSettings(context, updatedSettings);
 
-    this.SetTitle(context, keyPressCounter);
+    this.SetTitle(context, keyPressCounter);*/
   },
 
   onWillAppear: function (context, settings, coordinates) {
@@ -130,7 +129,7 @@ const counterAction = {
     const event = jsonObj["event"];
     const action = jsonObj["action"];
     const context = jsonObj["context"];
-    console.log(`message received ${event}`);
+    console.log(`message received <FK{{{ ${event}`);
 
     switch (event) {
       case "keyDown": {
@@ -151,6 +150,8 @@ const counterAction = {
         const settings = jsonPayload["settings"];
         const coordinates = jsonPayload["coordinates"];
         const userDesiredState = jsonPayload["userDesiredState"];
+        console.log("hello");
+        console.log(API_KEY);
         counterAction.onKeyUp(context, settings, coordinates, userDesiredState);
         break;
       }
@@ -163,6 +164,7 @@ const counterAction = {
       }
       case "didReceiveGlobalSettings":
         console.log(jsonObj);
+        API_KEY = jsonObj.payload.settings.apiKey;
         break;
       case "deviceDidConnect":
         getGlobalSettings(context);
