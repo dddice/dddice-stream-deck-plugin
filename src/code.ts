@@ -1,17 +1,8 @@
 import API from "./api";
 import { convertEquation, convertOperators } from "./rollConverter";
-
-let websocket = null;
-let pluginUUID = null;
-
-const DestinationEnum = Object.freeze({
-  HARDWARE_AND_SOFTWARE: 0,
-  HARDWARE_ONLY: 1,
-  SOFTWARE_ONLY: 2,
-});
+import ElgatoBus, { ElgatoEventHandler } from "./elgatoBus";
 
 let API_KEY;
-let timer;
 
 interface ISettings {
   rollEquation: string;
@@ -19,27 +10,12 @@ interface ISettings {
   room: string;
 }
 
+let elgatoBus: ElgatoBus;
+
 const quickRoll = {
   type: "com.dddice.quick-roll.macro",
 
-  onKeyDown: function (context, settings, coordinates, userDesiredState) {
-    timer = setTimeout(function () {
-      const updatedSettings = {};
-      updatedSettings["keyPressCounter"] = -1;
-
-      quickRoll.SetSettings(context, updatedSettings);
-      quickRoll.SetTitle(context, 0);
-    }, 1500);
-  },
-
-  onKeyUp: function (
-    context,
-    settings: ISettings,
-    coordinates,
-    userDesiredState
-  ) {
-    clearTimeout(timer);
-
+  onKeyUp: (context, settings: ISettings) => {
     console.log(`api key ${API_KEY}`);
     const api = new API(API_KEY);
     api.roll().create({
@@ -47,52 +23,6 @@ const quickRoll = {
       room: settings.room,
       operator: convertOperators(settings.rollEquation),
     });
-
-    /*let keyPressCounter = 0;
-    if (settings != null && settings.hasOwnProperty("keyPressCounter")) {
-      keyPressCounter = settings["keyPressCounter"];
-    }
-
-    keyPressCounter++;
-
-    const updatedSettings = {};
-    updatedSettings["keyPressCounter"] = keyPressCounter;
-
-    this.SetSettings(context, updatedSettings);
-
-    this.SetTitle(context, keyPressCounter);*/
-  },
-
-  onWillAppear: function (context, settings, coordinates) {
-    let keyPressCounter = 0;
-    if (settings != null && settings.hasOwnProperty("keyPressCounter")) {
-      keyPressCounter = settings["keyPressCounter"];
-    }
-
-    this.SetTitle(context, keyPressCounter);
-  },
-
-  SetTitle: function (context, keyPressCounter) {
-    const json = {
-      event: "setTitle",
-      context: context,
-      payload: {
-        title: "" + keyPressCounter,
-        target: DestinationEnum.HARDWARE_AND_SOFTWARE,
-      },
-    };
-
-    websocket.send(JSON.stringify(json));
-  },
-
-  SetSettings: function (context, settings) {
-    const json = {
-      event: "setSettings",
-      context: context,
-      payload: settings,
-    };
-
-    websocket.send(JSON.stringify(json));
   },
 };
 
@@ -103,83 +33,16 @@ const quickRoll = {
   inInfo,
   inActionInfo
 ) => {
-  pluginUUID = inPluginUUID;
-
-  // Open the web socket
-  websocket = new WebSocket("ws://127.0.0.1:" + inPort);
-
-  console.log(inActionInfo);
-
-  function registerPlugin(inPluginUUID) {
-    const json = {
-      event: inRegisterEvent,
-      uuid: inPluginUUID,
-    };
-
-    websocket.send(JSON.stringify(json));
-  }
-
-  function getGlobalSettings(context) {
-    console.log("getGlobalSettings");
-    const json = {
-      event: "getGlobalSettings",
-      context: pluginUUID,
-    };
-
-    websocket.send(JSON.stringify(json));
-  }
-
-  websocket.onopen = function () {
-    // WebSocket is connected, send message
-    registerPlugin(pluginUUID);
-  };
-
-  websocket.onmessage = function (evt) {
-    // Received message from Stream Deck
-    const jsonObj = JSON.parse(evt.data);
-    console.log(jsonObj);
-    const event = jsonObj["event"];
-    const action = jsonObj["action"];
-    const context = jsonObj["context"];
-    console.log(`message received ${event}`);
-
-    switch (event) {
-      case "keyDown": {
-        const jsonPayload = jsonObj["payload"];
-        const settings = jsonPayload["settings"];
-        const coordinates = jsonPayload["coordinates"];
-        const userDesiredState = jsonPayload["userDesiredState"];
-        quickRoll.onKeyDown(context, settings, coordinates, userDesiredState);
-        break;
-      }
-      case "keyUp": {
-        const jsonPayload = jsonObj["payload"];
-        const settings = jsonPayload["settings"];
-        const coordinates = jsonPayload["coordinates"];
-        const userDesiredState = jsonPayload["userDesiredState"];
-        console.log("hello");
-        console.log(API_KEY);
-        quickRoll.onKeyUp(context, settings, coordinates, userDesiredState);
-        break;
-      }
-      case "willAppear": {
-        const jsonPayload = jsonObj["payload"];
-        const settings = jsonPayload["settings"];
-        const coordinates = jsonPayload["coordinates"];
-        quickRoll.onWillAppear(context, settings, coordinates);
-        break;
-      }
-      case "didReceiveGlobalSettings":
-        console.log(jsonObj);
-        API_KEY = jsonObj.payload.settings.apiKey;
-        break;
-      case "deviceDidConnect":
-        getGlobalSettings(context);
-        break;
-    }
-  };
-
-  websocket.onclose = function () {
-    // Websocket is closed
-  };
+  elgatoBus = new ElgatoBus(
+    inPort,
+    inPluginUUID,
+    inRegisterEvent,
+    inInfo,
+    inActionInfo
+  );
+  elgatoBus.on("keyUp", quickRoll.onKeyUp.bind(quickRoll));
+  elgatoBus.on("didReceiveGlobalSettings", (context, settings) => {
+    API_KEY = settings.apiKey;
+  });
+  elgatoBus.connect();
 };
