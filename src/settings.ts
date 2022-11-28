@@ -1,6 +1,8 @@
+/** @format */
+
 // this is our global websocket, used to communicate from/to Stream Deck software
 // and some info about our plugin, as sent by Stream Deck software
-import ElgatoBus from "./elgatoBus";
+import ElgatoBus from './elgatoBus';
 
 let websocket = null,
   uuid = null,
@@ -14,15 +16,9 @@ let elgatoBus: ElgatoBus;
   inUUID,
   inRegisterEvent,
   inInfo,
-  inActionInfo
+  inActionInfo,
 ) => {
-  elgatoBus = new ElgatoBus(
-    inPort,
-    inUUID,
-    inRegisterEvent,
-    inInfo,
-    inActionInfo
-  );
+  elgatoBus = new ElgatoBus(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo);
   actionInfo = JSON.parse(inActionInfo); // cache the info
   console.log(inActionInfo);
   settings = actionInfo?.payload?.settings;
@@ -30,16 +26,16 @@ let elgatoBus: ElgatoBus;
   Object.entries(settings).forEach(([key, value]) => {
     const element = document.getElementById(`dddice-${key}`) as HTMLElement;
     if (element) {
-      element.setAttribute("value", value);
+      element.setAttribute('value', value);
     }
   });
 
-  elgatoBus.on("didReceiveGlobalSettings", (context, settings) => {
+  elgatoBus.on('didReceiveGlobalSettings', (context, settings) => {
     globalSettings = settings;
     Object.entries(globalSettings).forEach(([key, value]) => {
       const element = document.getElementById(`dddice-${key}`) as HTMLElement;
       if (element) {
-        element.setAttribute("value", value);
+        element.setAttribute('value', value);
       }
     });
   });

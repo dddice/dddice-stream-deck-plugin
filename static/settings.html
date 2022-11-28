@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -9,6 +11,15 @@
   <body>
     <div class="sdpi-wrapper">
       <div type="select" class="sdpi-item">
+        <div type="select" class="sdpi-item">
+          <div class="sdpi-item-label">API Key</div>
+          <input
+            type="password"
+            class="sdpi-item-value"
+            id="dddice-apiKey"
+            onchange="setGlobalSetting('apiKey', event.target.value)"
+          />
+        </div>
         <div class="sdpi-item-label">Roll Equation</div>
         <input
           type="text"
@@ -24,15 +35,6 @@
           class="sdpi-item-value"
           id="dddice-diceTheme"
           onchange="setSetting('diceTheme', event.target.value)"
-        />
-      </div>
-      <div type="select" class="sdpi-item">
-        <div class="sdpi-item-label">API Key</div>
-        <input
-          type="password"
-          class="sdpi-item-value"
-          id="dddice-apiKey"
-          onchange="setGlobalSetting('apiKey', event.target.value)"
         />
       </div>
       <div type="select" class="sdpi-item">

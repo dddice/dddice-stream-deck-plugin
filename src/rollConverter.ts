@@ -1,4 +1,6 @@
-import { Parser } from "@dice-roller/rpg-dice-roller";
+/** @format */
+
+import { Parser } from '@dice-roller/rpg-dice-roller';
 
 export function convertOperators(equation: string) {
   const operator = {};
@@ -6,12 +8,12 @@ export function convertOperators(equation: string) {
   if (keep) {
     if (keep.length > 0) {
       if (keep.length == 3) {
-        operator["k"] = `${keep[1]}${keep[2]}`;
+        operator['k'] = `${keep[1]}${keep[2]}`;
       } else if (keep.length == 2) {
-        operator["k"] = `${keep[1]}1`;
+        operator['k'] = `${keep[1]}1`;
       } else if (keep.length == 1) {
-        if (operator === "k") {
-          operator["k"] = "h1";
+        if (operator === 'k') {
+          operator['k'] = 'h1';
         }
       }
     }
@@ -27,7 +29,7 @@ export function convertEquation(equation: string, theme: string) {
   // build the roll object
   let sign = 1;
   let hasDice = false;
-  parsedEquation.forEach((term) => {
+  parsedEquation.forEach(term => {
     if (term.sides && term.qty) {
       hasDice = true;
       for (let i = 0; i < term.qty; i++) {
@@ -47,14 +49,14 @@ export function convertEquation(equation: string, theme: string) {
           });
         }
       }
-    } else if (term === "+") {
+    } else if (term === '+') {
       sign = 1;
-    } else if (term === "-") {
+    } else if (term === '-') {
       sign = -1;
     } else {
       dice.push({
         theme,
-        type: "mod",
+        type: 'mod',
         value: sign * parseInt(term),
       });
     }

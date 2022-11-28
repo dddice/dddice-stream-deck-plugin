@@ -1,15 +1,12 @@
+/** @format */
+
 const DestinationEnum = Object.freeze({
   HARDWARE_AND_SOFTWARE: 0,
   HARDWARE_ONLY: 1,
   SOFTWARE_ONLY: 2,
 });
 
-export type ElgatoEventHandler = (
-  context,
-  settings,
-  coordinates,
-  userDesiredState
-) => void;
+export type ElgatoEventHandler = (context, settings, coordinates, userDesiredState) => void;
 
 export default class ElgatoBus {
   private pluginUUID: string;
@@ -30,17 +27,17 @@ export default class ElgatoBus {
 
   connect() {
     // Open the web socket
-    this.websocket = new WebSocket("ws://127.0.0.1:" + this.port);
+    this.websocket = new WebSocket('ws://127.0.0.1:' + this.port);
 
     console.log(this.actionInfo);
     this.websocket.onopen = () => {
       // WebSocket is connected, send message
-      console.log("open websocket");
+      console.log('open websocket');
       this.registerPlugin(this.pluginUUID);
       this.getGlobalSettings();
     };
 
-    this.websocket.onmessage = (evt) => {
+    this.websocket.onmessage = evt => {
       const data = JSON.parse(evt.data);
       console.log(`message received ${data.event}`);
       console.log(data);
@@ -49,7 +46,7 @@ export default class ElgatoBus {
           data.context,
           data.payload?.settings,
           data.payload?.coordinates,
-          data.payload?.userDesiredState
+          data.payload?.userDesiredState,
         );
       }
     };
@@ -69,9 +66,9 @@ export default class ElgatoBus {
   }
 
   getGlobalSettings() {
-    console.log("getGlobalSettings");
+    console.log('getGlobalSettings');
     const json = {
-      event: "getGlobalSettings",
+      event: 'getGlobalSettings',
       context: this.pluginUUID,
     };
 
@@ -80,10 +77,10 @@ export default class ElgatoBus {
 
   setTitle(context, keyPressCounter) {
     const json = {
-      event: "setTitle",
+      event: 'setTitle',
       context: context,
       payload: {
-        title: "" + keyPressCounter,
+        title: '' + keyPressCounter,
         target: DestinationEnum.HARDWARE_AND_SOFTWARE,
       },
     };
@@ -91,18 +88,18 @@ export default class ElgatoBus {
     this.websocket.send(JSON.stringify(json));
   }
 
-  setSetting = (settings) => {
+  setSetting = settings => {
     const json = {
-      event: "setSettings",
+      event: 'setSettings',
       context: this.pluginUUID,
       payload: settings,
     };
     this.websocket.send(JSON.stringify(json));
   };
 
-  setGlobalSetting = (settings) => {
+  setGlobalSetting = settings => {
     const json = {
-      event: "setGlobalSetting",
+      event: 'setGlobalSetting',
       context: this.pluginUUID,
       payload: settings,
     };

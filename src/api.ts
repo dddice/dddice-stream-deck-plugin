@@ -4,9 +4,9 @@
  * @format
  */
 
-import axios from "axios";
+import axios from 'axios';
 
-const API_URI = "https://dddice.com/api/1.0";
+const API_URI = 'https://dddice.com/api/1.0';
 
 export const DefaultStorage: IStorage = {
   apiKey: undefined,
@@ -42,8 +42,8 @@ class API {
   constructor(apiKey: string) {
     this.apiKey = apiKey;
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${this.apiKey}`;
-    axios.defaults.headers.common["Content-Type"] = `application/json`;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${this.apiKey}`;
+    axios.defaults.headers.common['Content-Type'] = `application/json`;
   }
 
   public user = () => ({
@@ -66,7 +66,7 @@ class API {
 
   public diceBox = () => ({
     list: async (filter?: string) => {
-      const query = filter ? `?filter=${filter}` : "";
+      const query = filter ? `?filter=${filter}` : '';
       const data = (await axios.get(`${API_URI}/dice-box${query}`)).data;
       this.links = data.links;
       return data.data;
