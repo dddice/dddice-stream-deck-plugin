@@ -1,10 +1,14 @@
-# dddice
+# dddice Stream Deck Plugin
 
-dddice | 3D Dice Roller
+Use your Elgato Stream Deck to send rolls at a push of a button to dddice. 
 
-Features:
+## Features
 
-- Describe your features
+### Quick Roll Macros
+Use a quick roll macro action to quickly roll dice, as represented by a dice equation, to a configured room. All dice will be rolled in the same theme
+
+### Dice Buttons (coming soon)
+Create buttons on your stream deck that represent dice you might want to roll. Ex a Black d20. Press the dice you want to roll, then press the "Roll" button to throw them all 
 
 ## Installation
 
@@ -12,31 +16,49 @@ Features:
    <https://github.com/dddice/dddice-stream-deck-plugin/raw/main/release/com.dddice.dddice.streamDeckPlugin>
 2. Go to the download folder and open `com.dddice.dddice.streamDeckPlugin`.
 
-## Usage
+## Feedback
 
-To be written.
+dddice is built with our community in mind! We are extremely interested in your feedback. Interested in connecting with us?
 
-## Maintainer
+- [Become a backer on Patreon](https://www.patreon.com/dddice)
+- [Join the dddice Discord Server](https://discord.gg/VzHq5TfAr6)
+- [Follow dddice on Twitter](https://twitter.com/dddice_app)
+- [Join the dddice subreddit](https://reddit.com/r/dddice)
+- [Subscribe to dddice on YouTube](https://www.youtube.com/channel/UC8OaoMy-oFAvebUi_rOc1dQ)
+- [Follow dddice on Twitch](https://www.twitch.tv/dddice_app)
 
-- [Celeste Bloodreign](https://github.com/dddice)
+## Documentation and API
 
-## Contributors
+dddice features a robust API and SDK to build applications with.
 
-- <https://github.com/dddice/dddice-stream-deck-plugin/contributors>
+- [API Documentation](https://docs.dddice.com/api?ref=foundry)
+- [SDK Documentation](https://docs.dddice.com/sdk/js/latest?ref=foundry)
 
-## Contributing
+## Development
 
-For more details about how to contribute, please read
-<https://github.com/dddice/dddice-stream-deck-plugin/blob/main/CONTRIBUTING.md>.
+If you would like to contribute to this extension, follow the instructions below.
+
+You will need [Node.js](https://nodejs.org/en/) and [NPM](https://www.npmjs.com/).
+
+We use [Volta](https://volta.sh) to pin our node and npm versions, but it's not necessary that you do as well
+
+```shell
+# Clone this repository
+git clone git@github.com:dddice/dddice-stream-deck-plugin.git
+
+# Install dependencies
+npm i
+
+# create a symlink to your stream deck plugins directory
+mkdir %appdata%\Elgato\StreamDeck\Plugins\com.dddice.roll.sdPlugin
+mklink com.dddice.roll.sdPlugin %appdata%\Elgato\StreamDeck\Plugins\com.dddice.roll.sdPlugin /D
+
+# Start the package bundler
+npm run start
+```
 
 ## License
 
 The plugin is available as open source under the terms of the
 [MIT License](https://opensource.org/licenses/MIT). A copy of the license can be
 found at <https://github.com/dddice/dddice-stream-deck-plugin/blob/main/LICENSE.md>.
-
-## Code of Conduct
-
-Everyone interacting in the dddice-stream-deck-plugin project's codebases, issue trackers, chat
-rooms and mailing lists is expected to follow the
-[code of conduct](https://github.com/dddice/dddice-stream-deck-plugin/blob/main/CODE_OF_CONDUCT.md).
