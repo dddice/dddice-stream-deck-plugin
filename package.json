@@ -17,10 +17,20 @@
       }
     }
   },
+  "watch": {
+    "build": {
+      "patterns": [
+        "src",
+        "static"
+      ],
+      "extensions": "ts,html,css,png",
+      "quiet": false
+    }
+  },
   "scripts": {
-    "build": "parcel build --target default --dist-dir=C:\\Users\\narmi\\AppData\\Roaming\\Elgato\\StreamDeck\\Plugins\\com.dddice.roll.sdPlugin --public-url ./",
+    "build": "parcel build --target default --dist-dir=com.dddice.roll.sdPlugin --public-url ./",
     "lint": "eslint .",
-    "start": "parcel watch --target default --dist-dir=C:\\Users\\narmi\\AppData\\Roaming\\Elgato\\StreamDeck\\Plugins\\com.dddice.roll.sdPlugin --host localhost --public-url ./"
+    "start": "npm-watch build"
   },
   "dependencies": {
     "@dice-roller/rpg-dice-roller": "^5.2.1"
@@ -35,6 +45,7 @@
     "events": "^3.3.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.1.1",
+    "npm-watch": "^0.11.0",
     "parcel": "^2.7.0",
     "parcel-reporter-static-files-copy": "^1.4.0",
     "prettier": "^2.8.0",
