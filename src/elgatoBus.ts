@@ -94,7 +94,7 @@ export default class ElgatoBus {
 
   setGlobalSettings = settings => {
     const json = {
-      event: 'setGlobalSetting',
+      event: 'setGlobalSettings',
       context: this.pluginUUID,
       payload: settings,
     };

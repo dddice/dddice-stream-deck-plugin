@@ -34,7 +34,9 @@
     "start": "npm-watch build"
   },
   "dependencies": {
-    "@dice-roller/rpg-dice-roller": "^5.2.1"
+    "@dice-roller/rpg-dice-roller": "^5.2.1",
+    "classnames": "^2.3.2",
+    "react-tooltip": "^4.5.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.2.1",
