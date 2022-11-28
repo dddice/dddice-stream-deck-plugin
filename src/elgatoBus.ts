@@ -83,7 +83,7 @@ export default class ElgatoBus {
     this.websocket.send(JSON.stringify(json));
   }
 
-  setSetting = settings => {
+  setSettings = settings => {
     const json = {
       event: 'setSettings',
       context: this.pluginUUID,
@@ -92,7 +92,7 @@ export default class ElgatoBus {
     this.websocket.send(JSON.stringify(json));
   };
 
-  setGlobalSetting = settings => {
+  setGlobalSettings = settings => {
     const json = {
       event: 'setGlobalSetting',
       context: this.pluginUUID,
