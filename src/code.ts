@@ -2,7 +2,7 @@
 
 import API from './api';
 import { convertEquation, convertOperators } from './rollConverter';
-import ElgatoBus, { ElgatoEventHandler } from './elgatoBus';
+import ElgatoBus from './elgatoBus';
 
 let API_KEY;
 
@@ -18,7 +18,6 @@ const quickRoll = {
   type: 'com.dddice.quick-roll.macro',
 
   onKeyUp: (context, settings: ISettings) => {
-    console.log(`api key ${API_KEY}`);
     const api = new API(API_KEY);
     api.roll().create({
       dice: convertEquation(settings.rollEquation, settings.diceTheme),

@@ -28,10 +28,8 @@ export function convertEquation(equation: string, theme: string) {
 
   // build the roll object
   let sign = 1;
-  let hasDice = false;
   parsedEquation.forEach(term => {
     if (term.sides && term.qty) {
-      hasDice = true;
       for (let i = 0; i < term.qty; i++) {
         if (term.sides === 100) {
           dice.push({

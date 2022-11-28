@@ -29,18 +29,14 @@ export default class ElgatoBus {
     // Open the web socket
     this.websocket = new WebSocket('ws://127.0.0.1:' + this.port);
 
-    console.log(this.actionInfo);
     this.websocket.onopen = () => {
       // WebSocket is connected, send message
-      console.log('open websocket');
       this.registerPlugin(this.pluginUUID);
       this.getGlobalSettings();
     };
 
     this.websocket.onmessage = evt => {
       const data = JSON.parse(evt.data);
-      console.log(`message received ${data.event}`);
-      console.log(data);
       if (this.listeners[data.event]) {
         this.listeners[data.event](
           data.context,
@@ -66,7 +62,6 @@ export default class ElgatoBus {
   }
 
   getGlobalSettings() {
-    console.log('getGlobalSettings');
     const json = {
       event: 'getGlobalSettings',
       context: this.pluginUUID,
