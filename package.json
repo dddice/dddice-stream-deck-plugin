@@ -29,7 +29,7 @@
     }
   },
   "scripts": {
-    "build": "parcel build --target default --dist-dir=com.dddice.roll.sdPlugin --public-url ./",
+    "build": "parcel build --target default --dist-dir=com.dddice.app.sdPlugin --public-url ./",
     "lint": "eslint src/*.ts*",
     "start": "npm-watch build"
   },

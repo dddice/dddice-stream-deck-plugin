@@ -50,8 +50,8 @@ git clone git@github.com:dddice/dddice-stream-deck-plugin.git
 npm i
 
 # create a symlink to your stream deck plugins directory
-mkdir %appdata%\Elgato\StreamDeck\Plugins\com.dddice.roll.sdPlugin
-mklink com.dddice.roll.sdPlugin %appdata%\Elgato\StreamDeck\Plugins\com.dddice.roll.sdPlugin /D
+mkdir %appdata%\Elgato\StreamDeck\Plugins\com.dddice.app.sdPlugin
+mklink com.dddice.app.sdPlugin %appdata%\Elgato\StreamDeck\Plugins\com.dddice.app.sdPlugin /D
 
 # Start the package bundler
 npm run start

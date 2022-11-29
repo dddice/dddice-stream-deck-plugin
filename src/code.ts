@@ -15,7 +15,7 @@ interface ISettings {
 let elgatoBus: ElgatoBus;
 
 const quickRoll = {
-  type: 'com.dddice.quick-roll.macro',
+  type: 'com.dddice.app.macro',
 
   onKeyUp: (context, settings: ISettings) => {
     const api = new API(API_KEY);

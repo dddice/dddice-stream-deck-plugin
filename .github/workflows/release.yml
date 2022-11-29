@@ -52,7 +52,7 @@ jobs:
       - name: Zip Release
         uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r com.dddice.roll.streamDeckPlugin com.dddice.roll.sdPlugin
+          args: zip -qq -r com.dddice.app.streamDeckPlugin com.dddice.app.sdPlugin
 
       - name: Generate Changelog
         id: git-cliff
@@ -90,6 +90,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: com.dddice.roll.streamDeckPlugin
-          asset_name: com.dddice.roll.streamDeckPlugin
+          asset_path: com.dddice.app.streamDeckPlugin
+          asset_name: com.dddice.app.streamDeckPlugin
           asset_content_type: application/zip

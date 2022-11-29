@@ -2,6 +2,6 @@
 /dist/
 node_modules/
 /.parcel-cache/
-/com.dddice.roll.sdPlugin/
+/com.dddice.app.sdPlugin/
 .idea
-/com.dddice.roll.streamDeckPlugin
+/com.dddice.app.streamDeckPlugin

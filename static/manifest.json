@@ -12,7 +12,7 @@
       ],
       "SupportedInMultiActions": false,
       "Tooltip": "One button press to quick roll a full dice equation",
-      "UUID": "com.dddice.quick-roll.macro"
+      "UUID": "com.dddice.app.macro"
     }
   ],
   "Author": "dddice",
