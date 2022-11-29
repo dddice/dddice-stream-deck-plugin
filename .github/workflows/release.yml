@@ -1,0 +1,95 @@
+# @format
+#
+# Release to various browser extension stores
+
+name: 'Release'
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release Tag'
+        required: true
+        type: string
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ github.event.inputs.tag }}
+
+    steps:
+      - name: Setup Volta
+        uses: volta-cli/action@v4
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # fetch all history for git-cliff
+
+      - name: Update Version
+        run: |
+          npm --no-git-tag-version --allow-same-version version $VERSION
+          MANIFEST=$(cat static/manifest.json | jq ".Version |= \"${VERSION/v/}\"")
+          echo "$MANIFEST" > static/manifest.json
+
+      - name: Tag Release
+        run: |
+          git add .
+          git config user.email "developers@dddice.com"
+          git config user.name "dddice"
+          git commit -m "release: ${{ github.event.inputs.tag }}" || echo 'ok'
+          git push
+          git tag -f ${{ github.event.inputs.tag }}
+          git push -f origin ${{ github.event.inputs.tag }}
+
+      - name: Build Release
+        run: |
+          npm ci
+          npm run build
+
+      - name: Zip Release
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r com.dddice.roll.streamDeckPlugin com.dddice.roll.sdPlugin
+
+      - name: Generate Changelog
+        id: git-cliff
+        uses: orhun/git-cliff-action@v1
+        with:
+          config: cliff.toml
+          args: --current --date-order --strip all
+        env:
+          OUTPUT: CHANGES.md
+
+      - name: Set the release body
+        id: release
+        shell: bash
+        run: |
+          r=$(cat ${{ steps.git-cliff.outputs.changelog }})
+          echo "RELEASE_BODY<<EOF" >>$GITHUB_OUTPUT
+          echo "$r" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.tag }}
+          release_name: ${{ github.event.inputs.tag }}
+          body: ${{ steps.release.outputs.RELEASE_BODY }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Artifacts
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: com.dddice.roll.streamDeckPlugin
+          asset_name: com.dddice.roll.streamDeckPlugin
+          asset_content_type: application/zip
