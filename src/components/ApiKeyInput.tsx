@@ -4,6 +4,9 @@ import { useState, useCallback } from 'react';
 
 import API, { IUser } from '../api';
 
+import Check from '../assets/interface-essential-done-check-3.svg';
+import classNames from 'classnames';
+
 const ApiKeyInput = props => {
   const { onSuccess } = props;
   /**
@@ -44,10 +47,13 @@ const ApiKeyInput = props => {
         <input
           disabled={isLoading}
           type="password"
-          className="sdpi-item-value mr-6"
+          className="sdpi-item-value mr-2 min-w-6"
           id="dddice-apiKey"
           name="apiKey"
         />
+        <button formaction="submit" className="flex flex-row items-center justify-center mr-6">
+          <Check className="flex h-4 w-4 border-0" data-tip="Submit" />
+        </button>
       </div>
     </form>
   );
