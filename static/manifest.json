@@ -19,9 +19,9 @@
   "Category": "dddice",
   "CategoryIcon": "categoryIcon",
   "CodePath": "code.html",
-  "Description": "Roll A Die",
+  "Description": "Roll 3D digital direct from your StreamDeck",
   "Icon": "pluginIcon",
-  "Name": "Roll",
+  "Name": "dddice",
   "OS": [
     {
       "MinimumVersion": "10.11",
