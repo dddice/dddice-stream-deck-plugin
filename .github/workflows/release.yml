@@ -11,6 +11,10 @@ on:
         description: 'Release Tag'
         required: true
         type: string
+      force:
+        description: 'Force Release'
+        default: false
+        type: boolean
 
 jobs:
   release:
@@ -34,13 +38,23 @@ jobs:
           MANIFEST=$(cat static/manifest.json | jq ".Version |= \"${VERSION/v/}\"")
           echo "$MANIFEST" > static/manifest.json
 
-      - name: Tag Release
+      - name: Commit
         run: |
           git add .
           git config user.email "developers@dddice.com"
           git config user.name "dddice"
-          git commit -m "release: ${{ github.event.inputs.tag }}" || echo 'ok'
+          git commit -m "release: ${{ github.event.inputs.tag }}-${{ github.run_number }}" || echo 'ok'
           git push
+
+      - name: Tag
+        if: inputs.force == false
+        run: |
+          git tag ${{ github.event.inputs.tag }}
+          git push origin ${{ github.event.inputs.tag }}
+
+      - name: Tag (Force)
+        if: inputs.force
+        run: |
           git tag -f ${{ github.event.inputs.tag }}
           git push -f origin ${{ github.event.inputs.tag }}
 
@@ -72,24 +86,15 @@ jobs:
           echo "$r" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release with Files
+        id: create_version_release
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ github.event.inputs.tag }}
-          release_name: ${{ github.event.inputs.tag }}
-          body: ${{ steps.release.outputs.RELEASE_BODY }}
+          allowUpdates: true # Set this to false if you want to prevent updating existing releases
+          name: ${{ github.event.inputs.tag }}
           draft: false
           prerelease: false
-
-      - name: Upload Artifacts
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: com.dddice.app.streamDeckPlugin
-          asset_name: com.dddice.app.streamDeckPlugin
-          asset_content_type: application/zip
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: 'com.dddice.app.streamDeckPlugin'
+          tag: ${{ github.event.inputs.tag }}
+          body: ${{ steps.release.outputs.RELEASE_BODY }}

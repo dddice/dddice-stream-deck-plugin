@@ -5,3 +5,4 @@ node_modules/
 /com.dddice.app.sdPlugin/
 .idea
 /com.dddice.app.streamDeckPlugin
+/com.dddice.app.sdPlugin
