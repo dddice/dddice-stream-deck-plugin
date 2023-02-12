@@ -10,6 +10,7 @@ import Loading from '../assets/loading.svg';
 import Help from '../assets/support-help-question-question-square.svg';
 import LogOut from '../assets/interface-essential-exit-door-log-out-1.svg';
 import Refresh from '../assets/arrows-diagrams-arrow-rotate-1.svg';
+import Key from '../assets/interface-essential-key-4.svg';
 
 import ApiKeyInput from './ApiKeyInput';
 
@@ -91,6 +92,14 @@ const PropertyInspector = () => {
     setError(undefined);
     setIsLoading(false);
   }, []);
+
+  const openHelp = () => {
+    elgatoBus.current.openLink('https://docs.dddice.com/guides/streamdeck-plugin.html');
+  };
+
+  const getApiKey = () => {
+    elgatoBus.current.openLink('https://dddice.com/account/developer');
+  };
 
   const onKeySuccess = useCallback((apiKey: string) => {
     setGlobalSetting('apiKey', apiKey);
@@ -177,7 +186,25 @@ const PropertyInspector = () => {
       ) : (
         <div className="sdpi-wrapper">
           {!globalSettings.apiKey ? (
-            <ApiKeyInput onSuccess={onKeySuccess} />
+            <>
+              <ApiKeyInput onSuccess={onKeySuccess} />
+              <div className="sdpi-item">
+                <button
+                  className="sdpi-item-value flex flex-row items-center justify-center"
+                  onClick={getApiKey}
+                >
+                  <Key className="flex h-4 w-4 mr-1" />
+                  <div className="flex">Get An API Key</div>
+                </button>
+                <button
+                  className="sdpi-item-value flex flex-row items-center justify-center"
+                  onClick={openHelp}
+                >
+                  <Help className="flex h-4 w-4 mr-1" />
+                  <div className="flex">Help</div>
+                </button>
+              </div>
+            </>
           ) : (
             <>
               <div type="select" className="sdpi-item">
@@ -250,7 +277,10 @@ const PropertyInspector = () => {
                   <LogOut className="flex h-4 w-4 mr-1" />
                   <div className="flex">Sign Out</div>
                 </button>
-                <button className="sdpi-item-value flex flex-row items-center justify-center">
+                <button
+                  className="sdpi-item-value flex flex-row items-center justify-center"
+                  onClick={openHelp}
+                >
                   <Help className="flex h-4 w-4 mr-1" />
                   <div className="flex">Help</div>
                 </button>

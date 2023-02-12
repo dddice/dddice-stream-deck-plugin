@@ -100,4 +100,14 @@ export default class ElgatoBus {
     };
     this.websocket.send(JSON.stringify(json));
   };
+
+  openLink = url => {
+    const json = {
+      event: 'openUrl',
+      payload: {
+        url,
+      },
+    };
+    this.websocket.send(JSON.stringify(json));
+  };
 }
