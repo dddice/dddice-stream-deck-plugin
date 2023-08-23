@@ -217,6 +217,16 @@ const PropertyInspector = () => {
                   value={settings.rollEquation}
                 />
               </div>
+              <div type="select" className="sdpi-item">
+                <div className="sdpi-item-label">Label</div>
+                <input
+                    type="text"
+                    className="sdpi-item-value mr-6"
+                    id="dddice-label"
+                    onInput={event => setSetting('label', event.target.value)}
+                    value={settings.label}
+                />
+              </div>
               <div className="sdpi-item">
                 <div className="sdpi-item-label">Room</div>
                 <select
