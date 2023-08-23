@@ -7,6 +7,7 @@ import ElgatoBus from './elgatoBus';
 let API_KEY;
 
 interface ISettings {
+  label?: string;
   rollEquation: string;
   diceTheme: string;
   room: string;
@@ -23,6 +24,7 @@ const quickRoll = {
       dice: convertEquation(settings.rollEquation, settings.diceTheme),
       room: settings.room,
       operator: convertOperators(settings.rollEquation),
+      label: settings.label,
     });
   },
 };

@@ -55,6 +55,7 @@ class API {
       dice: { type: string; theme: string }[];
       room: string;
       operator: object;
+      label?: string;
     }) => (await axios.post(`${API_URI}/roll`, params)).data.data,
   });
 
