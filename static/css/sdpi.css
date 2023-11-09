@@ -265,7 +265,7 @@ option {
   min-height: 32px;
   align-items: center;
   margin-top: 2px;
-  max-width: 344px;
+  max-width: 354px;
   /* -webkit-user-drag: none; */
 }
 
@@ -387,7 +387,8 @@ canvas.sdpi-item-value {
 }
 
 input.sdpi-item-value {
-  margin-left: 5px;
+  margin-left: 4px;
+  width:250px;
 }
 
 .sdpi-item-value button,
@@ -514,6 +515,7 @@ td:last-child {
 .sdpi-item-value > select {
   margin-right: 13px;
   margin-left: 4px;
+  max-width: 200px;
 }
 
 .sdpi-item-child,
@@ -701,7 +703,7 @@ textarea {
   border: none;
   margin-top: 2px;
   margin-bottom: 2px;
-  min-width: 219px;
+  min-width: 200px;
 }
 
 textarea + label {
@@ -814,7 +816,7 @@ legend {
 }
 .sdpi-item-value > textarea {
   padding: 0px;
-  width: 219px;
+  width: 200px;
   margin-left: 1px;
   margin-top: 3px;
   padding: 4px;
@@ -938,7 +940,7 @@ textarea {
 }
 
 textarea {
-  width: 219px; /*98%;*/
+  width: 200px; /*98%;*/
   height: 96%;
   min-height: 6em;
   resize: none;

@@ -6,7 +6,7 @@
   "author": "dddice <developers@dddice.com>",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "source": [
-    "src/code.ts",
+    "src/dddice.ts",
     "src/propertyInspector.tsx",
     "src/dddice.css"
   ],
@@ -31,12 +31,14 @@
   "scripts": {
     "build": "parcel build --target default --dist-dir=com.dddice.app.sdPlugin --public-url ./",
     "lint": "eslint src/*.ts*",
-    "start": "npm-watch build"
+    "start": "npm-watch build",
+    "dddice-js": "xcopy \\\\wsl$\\Ubuntu\\home\\celestebloodreign\\dddice\\www\\public\\js node_modules\\dddice-js\\ /y"
   },
   "dependencies": {
-    "@dice-roller/rpg-dice-roller": "^5.2.1",
     "classnames": "^2.3.2",
-    "react-tooltip": "^4.5.1"
+    "dddice-js": "^0.17.16",
+    "lodash-es": "^4.17.21",
+    "react-tooltip": "^5.22.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.2.1",
@@ -47,11 +49,15 @@
     "buffer": "^5.7.1",
     "crypto-browserify": "^3.12.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "events": "^3.3.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.1.1",
     "npm-watch": "^0.11.0",
-    "parcel": "^2.7.0",
+    "parcel": "^2.10.2",
     "parcel-reporter-static-files-copy": "^1.4.0",
     "prettier": "^2.8.0",
     "process": "^0.11.10",

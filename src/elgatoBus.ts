@@ -83,6 +83,22 @@ export default class ElgatoBus {
     this.websocket.send(JSON.stringify(json));
   }
 
+  showOk = context => {
+    const json = {
+      event: 'showOk',
+      context: context,
+    };
+    this.websocket.send(JSON.stringify(json));
+  };
+
+  showAlert = context => {
+    const json = {
+      event: 'showAlert',
+      context: context,
+    };
+    this.websocket.send(JSON.stringify(json));
+  };
+
   setSettings = settings => {
     const json = {
       event: 'setSettings',

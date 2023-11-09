@@ -1,34 +1,14 @@
 /** @format */
 
-import { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
-import API, { IUser } from '../api';
+import CheckIcon from '../assets/interface-essential-done-check-3.svg';
 
-import Check from '../assets/interface-essential-done-check-3.svg';
-import classNames from 'classnames';
+interface ApiKeyInputProps {
+  onSuccess(string): void;
+}
 
-const ApiKeyInput = props => {
-  const { onSuccess } = props;
-  /**
-   * Loading
-   */
-  const [isLoading, setIsLoading] = useState(false);
-
-  /**
-   * Check if API Key is valid
-   */
-  const checkKeyValid = useCallback(async apiKey => {
-    try {
-      setIsLoading(true);
-      const api = new API(apiKey);
-      const user: IUser = await api.user().get();
-      onSuccess(apiKey, user);
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
+const ApiKeyInput = ({ onSuccess }: ApiKeyInputProps) => {
   /**
    * Submit API Key Form
    */
@@ -45,14 +25,14 @@ const ApiKeyInput = props => {
       <div type="select" className="sdpi-item">
         <div className="sdpi-item-label">API Key</div>
         <input
-          disabled={isLoading}
+          disabled={false}
           type="password"
           className="sdpi-item-value mr-2 min-w-6"
           id="dddice-apiKey"
           name="apiKey"
         />
-        <button formaction="submit" className="flex flex-row items-center justify-center mr-6">
-          <Check className="flex h-4 w-4 border-0" data-tip="Submit" />
+        <button formAction="submit" className="flex flex-row items-center justify-center mr-6">
+          <CheckIcon className="flex h-4 w-4 border-0" data-tip="Submit" />
         </button>
       </div>
     </form>
