@@ -1,43 +1,28 @@
 /** @format */
 
 import classNames from 'classnames';
-import { IRoom, ITheme, ThreeDDiceAPI, MissingDieError } from 'dddice-js';
+import { ThreeDDiceAPI, MissingDieError } from 'dddice-js';
 import { parseRollEquation } from 'dddice-js';
 import { debounce } from 'lodash-es';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Tooltip } from 'react-tooltip';
 
+import ElgatoPropertyInspectorBus from '../ElgatoPropertyInspectorBus';
 import RefreshIcon from '../assets/arrows-diagrams-arrow-rotate-1.svg';
 import LogoutIcon from '../assets/interface-essential-exit-door-log-out-1.svg';
 import KeyIcon from '../assets/interface-essential-key-4.svg';
 import LoadingIcon from '../assets/loading.svg';
 import HelpIcon from '../assets/support-help-question-question-square.svg';
 import ElgatoBus from '../elgatoBus';
+import { IGlobalSettings, ISettings } from '../types';
 
 import ApiKeyInput from './ApiKeyInput';
-
-interface Settings {
-  rollEquation: string;
-  diceTheme: string;
-  label: string;
-  room: string;
-  values: string;
-}
-
-interface GlobalSettings {
-  apiKey: string;
-  themes: ITheme[];
-  rooms: IRoom[];
-}
-
-const availableDiceToString = (available_dice): string =>
-  available_dice.map(dice => dice.notation ?? dice.id ?? dice.type ?? dice).join(', ');
 
 const PropertyInspector = () => {
   const elgatoBus = useRef<ElgatoBus>(null);
 
-  const [settings, setSettings] = useState<Partial<Settings>>({});
-  const [globalSettings, setGlobalSettings] = useState<GlobalSettings>({});
+  const [settings, setSettings] = useState<Partial<ISettings>>({});
+  const [globalSettings, setGlobalSettings] = useState<IGlobalSettings>({});
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState();
   const [error, setError] = useState();
@@ -68,24 +53,27 @@ const PropertyInspector = () => {
       inInfo,
       inActionInfo,
     ) => {
-      elgatoBus.current = new ElgatoBus(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo);
+      elgatoBus.current = new ElgatoPropertyInspectorBus(
+        inPort,
+        inUUID,
+        inRegisterEvent,
+        inInfo,
+        inActionInfo,
+      );
 
       const actionInfo = JSON.parse(inActionInfo);
-      const settings: Settings = actionInfo?.payload?.settings;
+      const settings: ISettings = actionInfo?.payload?.settings;
       if (actionInfo?.payload?.settings) {
         setSettings(settings);
       }
 
-      elgatoBus.current.on(
-        'didReceiveGlobalSettings',
-        (_context, globalSettings: GlobalSettings) => {
-          setGlobalSettings(globalSettings);
-          // check the equation for errors on mount
-          if (settings?.rollEquation && settings?.diceTheme && globalSettings.themes) {
-            validateEquation(settings.rollEquation, settings?.diceTheme, globalSettings.themes);
-          }
-        },
-      );
+      elgatoBus.current.on('didReceiveGlobalSettings', (_context, { settings: globalSettings }) => {
+        setGlobalSettings(globalSettings);
+        // check the equation for errors on mount
+        if (settings?.rollEquation && settings?.diceTheme && globalSettings.themes) {
+          validateEquation(settings.rollEquation, settings?.diceTheme, globalSettings.themes);
+        }
+      });
 
       elgatoBus.current.connect();
     };
@@ -199,7 +187,7 @@ const PropertyInspector = () => {
     }
   }, [globalSettings.apiKey]);
 
-  const validateEquation = (equation, diceTheme, allThemes) => {
+  const validateEquation = async (equation, diceTheme, allThemes) => {
     const fullTheme = allThemes.find(theme => theme.id === diceTheme);
     try {
       parseRollEquation(`${equation}`, fullTheme);
@@ -221,17 +209,17 @@ const PropertyInspector = () => {
       equationRef.current.setCustomValidity('');
       setEquationErrors(null);
       setSetting('rollEquation', event.target.value);
-      debouncedValidateEquation(event.target.value, settings.diceTheme, themes, event.target);
+      debouncedValidateEquation(event.target.value, settings.diceTheme, themes);
     },
     [themes, settings],
   );
 
   const onChangeTheme = useCallback(
-    event => {
+    async event => {
       setSetting('diceTheme', event.target.value);
       equationRef.current.setCustomValidity('');
       setEquationErrors(null);
-      debouncedValidateEquation(settings.rollEquation, event.target.value, themes, event.target);
+      await validateEquation(settings.rollEquation, event.target.value, themes);
     },
     [themes, settings],
   );

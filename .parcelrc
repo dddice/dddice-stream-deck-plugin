@@ -6,11 +6,6 @@
     "...",
     "parcel-reporter-static-files-copy"
   ],
-  "validators": {
-    "*.{ts,tsx}": [
-      "@parcel/validator-typescript"
-    ]
-  },
   "transformers": {
     "*.svg": [
       "...",

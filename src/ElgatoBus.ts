@@ -6,22 +6,20 @@ const DestinationEnum = Object.freeze({
   SOFTWARE_ONLY: 2,
 });
 
-export type ElgatoEventHandler = (context, settings, coordinates, userDesiredState) => void;
+export type ElgatoEventHandler = (context, payload) => void;
 
 export default class ElgatoBus {
-  private pluginUUID: string;
-  private websocket: WebSocket;
-  private registerEvent: string;
-  private info: Record<string, string>;
-  private actionInfo: Record<string, string>;
-  private listeners: Record<string, ElgatoEventHandler> = {};
-  private port: string;
+  protected pluginUUID: string;
+  protected websocket: WebSocket;
+  protected registerEvent: string;
+  protected info: Record<string, string>;
+  protected listeners: Record<string, ElgatoEventHandler> = {};
+  protected port: string;
 
-  constructor(inPort, inPluginUUID, inRegisterEvent, inInfo, inActionInfo) {
+  constructor(inPort, inPluginUUID, inRegisterEvent, inInfo) {
     this.pluginUUID = inPluginUUID;
     this.registerEvent = inRegisterEvent;
     this.info = inInfo;
-    this.actionInfo = inActionInfo;
     this.port = inPort;
   }
 
@@ -38,12 +36,7 @@ export default class ElgatoBus {
     this.websocket.onmessage = evt => {
       const data = JSON.parse(evt.data);
       if (this.listeners[data.event]) {
-        this.listeners[data.event](
-          data.context,
-          data.payload?.settings,
-          data.payload?.coordinates,
-          data.payload?.userDesiredState,
-        );
+        this.listeners[data.event](data.context, data.payload);
       }
     };
   }
@@ -77,6 +70,18 @@ export default class ElgatoBus {
       payload: {
         title: '' + keyPressCounter,
         target: DestinationEnum.HARDWARE_AND_SOFTWARE,
+      },
+    };
+
+    this.websocket.send(JSON.stringify(json));
+  }
+
+  setImage(context, dataUrl) {
+    const json = {
+      event: 'setImage',
+      context: context,
+      payload: {
+        image: dataUrl,
       },
     };
 
