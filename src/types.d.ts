@@ -8,6 +8,7 @@ interface ISettings {
   rollEquation: string;
   room: string;
   values?: string;
+  background?: { fileName: string; dataUrl: string };
 }
 
 interface IGlobalSettings {

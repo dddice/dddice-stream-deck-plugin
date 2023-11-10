@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "src",
+    "baseUrl": ".",
     "declaration": true,
     "experimentalDecorators": true,
     "jsx": "react",
@@ -14,7 +14,9 @@
     "noImplicitAny": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "paths": {},
+    "paths": {
+      "~*": ["./*"]
+    },
     "preserveConstEnums": true,
     "resolveJsonModule": true,
     "removeComments": true,

@@ -6,7 +6,7 @@ const DestinationEnum = Object.freeze({
   SOFTWARE_ONLY: 2,
 });
 
-export type ElgatoEventHandler = (context, payload) => void;
+export type ElgatoEventHandler = (context, payload, action?) => void;
 
 export default class ElgatoBus {
   protected pluginUUID: string;
@@ -36,7 +36,7 @@ export default class ElgatoBus {
     this.websocket.onmessage = evt => {
       const data = JSON.parse(evt.data);
       if (this.listeners[data.event]) {
-        this.listeners[data.event](data.context, data.payload);
+        this.listeners[data.event](data.context, data.payload, data.action);
       }
     };
   }

@@ -5,14 +5,70 @@
       "Name": "Quick Roll Macro",
       "States": [
         {
+          "FontSize": "14",
+          "Image": "actionDefaultImage",
+          "TitleAlignment": "bottom"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "One button press to quick roll a full dice equation",
+      "UUID": "com.dddice.app.macro"
+    },
+    {
+      "Icon": "actionIcon",
+      "Name": "Pick Up Dice",
+      "States": [
+        {
           "FontSize": "16",
           "Image": "actionDefaultImage",
           "TitleAlignment": "middle"
         }
       ],
       "SupportedInMultiActions": false,
-      "Tooltip": "One button press to quick roll a full dice equation",
-      "UUID": "com.dddice.app.macro"
+      "Tooltip": "Press to pick you dice up",
+      "UUID": "com.dddice.app.pick_up"
+    },
+    {
+      "Icon": "actionIcon",
+      "Name": "Clear Roll History",
+      "States": [
+        {
+          "FontSize": "16",
+          "Image": "actionDefaultImage",
+          "TitleAlignment": "middle"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Clear the roll history of a room (GM only)",
+      "UUID": "com.dddice.app.clear_roll_history"
+    },
+    {
+      "Icon": "actionIcon",
+      "Name": "Pick Up Everyone's Dice",
+      "States": [
+        {
+          "FontSize": "16",
+          "Image": "actionDefaultImage",
+          "TitleAlignment": "middle"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Pick up all dice off the table (GM only)",
+      "UUID": "com.dddice.app.pick_up_all"
+    },
+    {
+      "Icon": "actionIcon",
+      "Name": "Change Room Background",
+      "States": [
+        {
+          "FontSize": "16",
+          "Image": "actionDefaultImage",
+          "TitleAlignment": "middle"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Change the background of your room at the press of a button (GM only)",
+      "UUID": "com.dddice.app.change_room_background"
     }
   ],
   "Author": "dddice",

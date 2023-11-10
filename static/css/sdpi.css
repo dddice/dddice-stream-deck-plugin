@@ -220,7 +220,6 @@ select {
   border-radius: var(--sdpi-borderradius);
 }
 
-label.sdpi-file-label,
 input[type='button'],
 input[type='submit'],
 input[type='reset'],
@@ -229,7 +228,6 @@ input[type='file']::-webkit-file-upload-button,
 button {
   border: 1pt solid var(--sdpi-buttonbordercolor);
   border-radius: var(--sdpi-borderradius);
-  border-color: var(--sdpi-buttonbordercolor);
   min-height: 23px !important;
   height: 23px !important;
   margin-right: 8px;
@@ -282,7 +280,8 @@ option {
   padding: 0px 4px 0px 4px;
 }
 
-.sdpi-item > *:not(.sdpi-item-label.empty):not(meter) {
+.sdpi-item > *:not(.sdpi-item-label.empty):not(meter),
+.sdpi-item-group > *:not(.sdpi-item-label.empty):not(meter) {
   min-height: 26px;
   padding: 0px 2px 0px 2px;
 }
@@ -388,7 +387,7 @@ canvas.sdpi-item-value {
 
 input.sdpi-item-value {
   margin-left: 4px;
-  width:250px;
+  width: 250px;
 }
 
 .sdpi-item-value button,
@@ -1158,12 +1157,11 @@ label.sdpi-file-label {
   cursor: pointer;
   user-select: none;
   display: inline-block;
-  min-height: 21px !important;
-  height: 21px !important;
+  min-height: 26px !important;
+  height: 26px !important;
   line-height: 20px;
   padding: 0px 4px;
-  margin: auto;
-  margin-right: 0px;
+  margin-right: 13px;
   float: right;
 }
 
@@ -1236,7 +1234,6 @@ input:required:valid {
 */
 
 .sdpi-item-group.file {
-  width: 232px;
   display: flex;
   align-items: center;
 }
@@ -1246,14 +1243,13 @@ input:required:valid {
   word-wrap: break-word;
   hyphens: auto;
 
-  min-width: 132px;
-  max-width: 144px;
+  min-width: 200px;
   max-height: 32px;
   margin-top: 0px;
-  margin-left: 5px;
+  margin-left: 4px;
   display: inline-block;
   overflow: hidden;
-  padding: 6px 4px;
+  padding: 0px 2px;
   background-color: var(--sdpi-background);
 }
 

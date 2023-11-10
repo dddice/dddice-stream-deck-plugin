@@ -2,7 +2,7 @@
 
 import React, { useCallback } from 'react';
 
-import CheckIcon from '../assets/interface-essential-done-check-3.svg';
+import { CheckIcon } from '~src/IconLibrary';
 
 interface ApiKeyInputProps {
   onSuccess(string): void;

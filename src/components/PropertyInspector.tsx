@@ -18,6 +18,13 @@ import { IGlobalSettings, ISettings } from '../types';
 
 import ApiKeyInput from './ApiKeyInput';
 
+import FileInput from '~src/components/FileInput';
+import { Login } from '~src/components/Login';
+import RefreshingSelectBox from '~src/components/RefreshingSelectBox';
+import TextInputWithErrors from '~src/components/TextInputWithErrors';
+import TextInputWithHelp from '~src/components/TextInputWithHelp';
+import { dataUrl, fileToDataUrl } from '~src/dataUrl';
+
 const PropertyInspector = () => {
   const elgatoBus = useRef<ElgatoBus>(null);
 
@@ -31,15 +38,8 @@ const PropertyInspector = () => {
   const [isRoomsLoading, setIsRoomsLoading] = useState(false);
   const api = useRef<ThreeDDiceAPI>();
   const equationRef = useRef();
-
-  /**
-   * Rooms
-   */
+  const [action, setAction] = useState();
   const [rooms, setRooms] = useState([]);
-
-  /**
-   * Themes
-   */
   const [themes, setThemes] = useState([]);
 
   /**
@@ -66,6 +66,8 @@ const PropertyInspector = () => {
       if (actionInfo?.payload?.settings) {
         setSettings(settings);
       }
+      setAction(actionInfo.action);
+      setIsLoading(true);
 
       elgatoBus.current.on('didReceiveGlobalSettings', (_context, { settings: globalSettings }) => {
         setGlobalSettings(globalSettings);
@@ -171,7 +173,7 @@ const PropertyInspector = () => {
         if (globalSettings.rooms) {
           setRooms(globalSettings.rooms);
         } else {
-          refreshRooms();
+          await refreshRooms();
         }
 
         if (globalSettings.themes) {
@@ -206,7 +208,6 @@ const PropertyInspector = () => {
 
   const setEquation = useCallback(
     event => {
-      equationRef.current.setCustomValidity('');
       setEquationErrors(null);
       setSetting('rollEquation', event.target.value);
       debouncedValidateEquation(event.target.value, settings.diceTheme, themes);
@@ -224,23 +225,113 @@ const PropertyInspector = () => {
     [themes, settings],
   );
 
+  let actionComponents;
+  switch (action) {
+    case 'com.dddice.app.macro':
+      actionComponents = (
+        <>
+          <TextInputWithErrors
+            onChange={setEquation}
+            value={settings.rollEquation}
+            errors={equationErrors}
+          />
+          <RefreshingSelectBox
+            label={'Room'}
+            onChange={event => setSetting('room', event.target.value)}
+            items={rooms.map(r => ({ id: r.slug, name: r.name }))}
+            current={settings.room}
+            isRefreshing={isRoomsLoading}
+            onRefresh={refreshRooms}
+          />
+          <RefreshingSelectBox
+            label={'Dice Theme'}
+            onChange={onChangeTheme}
+            items={themes}
+            current={settings.diceTheme}
+            isRefreshing={isThemesLoading}
+            onRefresh={refreshThemes}
+          />
+          <TextInputWithHelp
+            onChange={event => setSetting('label', event.target.value)}
+            value={settings.label}
+            label={'Roll Label'}
+            tooltipContent={
+              <>
+                <div>A description of the roll to show in the roll log</div>
+                <div>Ex: Hand Ax: Attack</div>
+                <button
+                  className="text-neon-blue bg-transparent border-0 underline"
+                  onClick={openHelp}
+                >
+                  Read more in our docs
+                </button>
+              </>
+            }
+          />
+          <TextInputWithHelp
+            onChange={event => setSetting('values', event.target.value)}
+            value={settings.values}
+            label={'Fudge the roll'}
+            tooltipContent={
+              <>
+                <div>A comma seperated list of the values you want the dice to land on</div>
+                <div>Ex: 6,3,5</div>
+                <button
+                  className="text-neon-blue bg-transparent border-0 underline"
+                  onClick={openHelp}
+                >
+                  Read more in our docs
+                </button>
+              </>
+            }
+          />
+        </>
+      );
+      break;
+    case 'com.dddice.app.change_room_background':
+      actionComponents = (
+        <>
+          <FileInput
+            value={settings.background?.fileName}
+            label={'Background'}
+            onChange={async event => {
+              setSetting('background', {
+                fileName: decodeURIComponent(event.target.files[0].name),
+              });
+            }}
+          />
+          <RefreshingSelectBox
+            label={'Room'}
+            onChange={event => setSetting('room', event.target.value)}
+            items={rooms.map(r => ({
+              id: r.slug,
+              name: r.name,
+              disabled: r.user.uuid !== api.current?.userUuid,
+            }))}
+            current={settings.room}
+            isRefreshing={isRoomsLoading}
+            onRefresh={refreshRooms}
+          />
+        </>
+      );
+      break;
+    case 'com.dddice.app.pick_up':
+      actionComponents = (
+        <RefreshingSelectBox
+          label={'Room'}
+          onChange={event => setSetting('room', event.target.value)}
+          items={rooms.map(r => ({ id: r.slug, name: r.name }))}
+          current={settings.room}
+          isRefreshing={isRoomsLoading}
+          onRefresh={refreshRooms}
+        />
+      </>
+    ),
+  }[action];
+
   return (
     <>
       <Tooltip noArrow={false} id="dddice-tooltip" />
-      <Tooltip noArrow={false} id="dddice-values-help-tooltip" clickable className="!bg-gray-900">
-        <div>A comma seperated list of the values to force the dice to roll</div>
-        <div>Ex: "6,1" to roll a 7 on 2d6</div>
-        <button className="text-neon-blue bg-transparent border-0 underline" onClick={openHelp}>
-          Read more in our docs
-        </button>
-      </Tooltip>
-      <Tooltip noArrow={false} id="dddice-label-help-tooltip" clickable className="!bg-gray-900">
-        <div>A description of the roll to show in the roll log</div>
-        <div>Ex: Hand Ax: Attack</div>
-        <button className="text-neon-blue bg-transparent border-0 underline" onClick={openHelp}>
-          Read more in our docs
-        </button>
-      </Tooltip>
       {error ? (
         <div className="sdpi-wrapper">
           <p className="text-center text-neon-red">{error}</p>
@@ -258,154 +349,31 @@ const PropertyInspector = () => {
       ) : (
         <div className="sdpi-wrapper">
           {!globalSettings.apiKey ? (
-            <>
-              <ApiKeyInput onSuccess={onKeySuccess} />
-              <div type="select" className="sdpi-item">
-                <button
-                  className="sdpi-item-value flex flex-row items-center justify-center"
-                  onClick={getApiKey}
-                >
-                  <KeyIcon className="flex h-4 w-4 mr-1" />
-                  <div className="flex">Get An API Key</div>
-                </button>
-                <button
-                  className="sdpi-item-value flex flex-row items-center justify-center"
-                  onClick={openHelp}
-                >
-                  <HelpIcon className="flex h-4 w-4 mr-1" />
-                  <div className="flex">Help</div>
-                </button>
-              </div>
-            </>
+            <Login onClick={getApiKey} onClick1={openHelp} onSuccess={onKeySuccess} />
           ) : (
             <>
-              <div type="select" className="sdpi-item">
-                <div className="sdpi-item-label">Roll Equation</div>
-                <input
-                  type="text"
-                  className="sdpi-item-value"
-                  id="dddice-rollEquation"
-                  ref={equationRef}
-                  onChange={setEquation}
-                  value={settings.rollEquation}
-                  required
-                />
-              </div>
-              {equationErrors && (
-                <div className="text-error justify-center sdpi-item">{equationErrors}</div>
-              )}
-              <div type="select" className="sdpi-item">
-                <div className="sdpi-item-label">Room</div>
-                <select
-                  className="sdpi-item-value select"
-                  id="dddice-room"
-                  onChange={event => setSetting('room', event.target.value)}
-                  value={settings.room}
-                  required
-                >
-                  <option>--- Select Room ---</option>
-                  {rooms.map(room => (
-                    <option key={room.slug} value={room.slug}>
-                      {room.name}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  className="flex flex-row items-center justify-center ml-2 w-[23px]"
-                  data-tooltip-html="Reload Room List"
-                  data-tooltip-id="dddice-tooltip"
-                  data-tooltip-place="top"
-                >
-                  <RefreshIcon
-                    className={classNames(
-                      'flex h-4 w-4 border-0',
-                      isRoomsLoading && 'animate-spin-slow',
-                    )}
-                    onClick={refreshRooms}
-                  />
-                </button>
-              </div>
-              <div type="select" className="sdpi-item">
-                <div className="sdpi-item-label">Dice Theme</div>
-                <select
-                  className="sdpi-item-value select"
-                  id="dddice-diceTheme"
-                  onChange={onChangeTheme}
-                  value={settings.diceTheme}
-                  required
-                >
-                  {themes.map(theme => (
-                    <option value={theme.id} key={theme.id}>
-                      {theme.name}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  className="flex flex-row items-center justify-center ml-2 w-[23px]"
-                  data-tooltip-html="Reload Theme List"
-                  data-tooltip-id="dddice-tooltip"
-                  data-tooltip-place="top"
-                >
-                  <RefreshIcon
-                    className={classNames(
-                      'flex h-4 w-4 border-0',
-                      isThemesLoading && 'animate-spin-slow',
-                    )}
-                    onClick={refreshThemes}
-                  />
-                </button>
-              </div>
-              <div type="select" className="sdpi-item">
-                <div className="sdpi-item-label">Label</div>
-                <input
-                  type="text"
-                  className="sdpi-item-value select"
-                  id="dddice-label"
-                  onInput={event => setSetting('label', event.target.value)}
-                  value={settings.label}
-                />
-                <button
-                  className="flex flex-row items-center justify-center ml-2 w-[23px]"
-                  data-tooltip-id="dddice-label-help-tooltip"
-                  data-tooltip-place="top"
-                >
-                  <div className="flex border-0">?</div>
-                </button>
-              </div>
-              <div type="select" className="sdpi-item">
-                <div className="sdpi-item-label">Forced Roll</div>
-                <input
-                  type="text"
-                  className="sdpi-item-value select"
-                  id="dddice-values"
-                  onInput={event => setSetting('values', event.target.value)}
-                  value={settings.values}
-                />
-                <button
-                  className="flex flex-row items-center justify-center ml-2 w-[23px]"
-                  data-tooltip-id="dddice-values-help-tooltip"
-                  data-tooltip-place="top"
-                >
-                  <div className="flex border-0">?</div>
-                </button>
-              </div>
-              <hr />
-              <div className="sdpi-item">
-                <button
-                  className="sdpi-item-value flex flex-row items-center justify-center"
-                  onClick={onSignOut}
-                >
-                  <LogoutIcon className="flex h-4 w-4 mr-1" />
-                  <div className="flex">Sign Out</div>
-                </button>
-                <button
-                  className="sdpi-item-value flex flex-row items-center justify-center"
-                  onClick={openHelp}
-                >
-                  <HelpIcon className="flex h-4 w-4 mr-1" />
-                  <div className="flex">Help</div>
-                </button>
-              </div>
+              {actionComponents}
+              {
+                <>
+                  <hr />
+                  <div className="sdpi-item">
+                    <button
+                      className="sdpi-item-value flex flex-row items-center justify-center"
+                      onClick={onSignOut}
+                    >
+                      <LogoutIcon className="flex h-4 w-4 mr-1" />
+                      <div className="flex">Sign Out</div>
+                    </button>
+                    <button
+                      className="sdpi-item-value flex flex-row items-center justify-center"
+                      onClick={openHelp}
+                    >
+                      <HelpIcon className="flex h-4 w-4 mr-1" />
+                      <div className="flex">Help</div>
+                    </button>
+                  </div>
+                </>
+              }
             </>
           )}
         </div>
