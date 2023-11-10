@@ -33,7 +33,8 @@ const quickRoll = {
       const response = await api.roll.create(dice, {
         room: settings.room,
         operator,
-        label: settings.label !== '' ? settings.label : undefined,
+        // turn any falsy into undefined. Other falsy will cause 400 in backend
+        label: settings.label ? settings.label : undefined,
       });
 
       if (response.data.type === 'error') {
