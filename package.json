@@ -32,7 +32,8 @@
     "build": "parcel build --target default --dist-dir=com.dddice.app.sdPlugin --public-url ./",
     "lint": "eslint src/*.ts*",
     "start": "parcel watch --target default --dist-dir=com.dddice.app.sdPlugin --public-url ./",
-    "dddice-js": "xcopy \\\\wsl$\\Ubuntu\\home\\celestebloodreign\\dddice\\www\\public\\js node_modules\\dddice-js\\ /y && xcopy \\\\wsl$\\Ubuntu\\home\\celestebloodreign\\dddice\\www\\public\\js\\types\\js\\@dice\\ node_modules\\dddice-js\\types /y"
+    "dddice-js": "xcopy \\\\wsl$\\Ubuntu\\home\\celestebloodreign\\dddice\\www\\public\\js node_modules\\dddice-js\\ /y && xcopy \\\\wsl$\\Ubuntu\\home\\celestebloodreign\\dddice\\www\\public\\js\\types\\js\\@dice\\ node_modules\\dddice-js\\types /y",
+    "clean": "rm -rf .parcel-cache"
   },
   "dependencies": {
     "classnames": "^2.3.2",

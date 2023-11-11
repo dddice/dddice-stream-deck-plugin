@@ -1,12 +1,12 @@
 {
   "Actions": [
     {
-      "Icon": "actionIcon",
+      "Icon": "actionMacroIcon",
       "Name": "Quick Roll Macro",
       "States": [
         {
           "FontSize": "14",
-          "Image": "actionDefaultImage",
+          "Image": "actionMacroImage",
           "TitleAlignment": "bottom"
         }
       ],
@@ -15,12 +15,12 @@
       "UUID": "com.dddice.app.macro"
     },
     {
-      "Icon": "actionIcon",
+      "Icon": "actionPickUpIcon",
       "Name": "Pick Up Dice",
       "States": [
         {
-          "FontSize": "16",
-          "Image": "actionDefaultImage",
+          "FontSize": "14",
+          "Image": "actionPickUpImage",
           "TitleAlignment": "middle"
         }
       ],
@@ -29,12 +29,12 @@
       "UUID": "com.dddice.app.pick_up"
     },
     {
-      "Icon": "actionIcon",
+      "Icon": "actionClearIcon",
       "Name": "Clear Roll History",
       "States": [
         {
-          "FontSize": "16",
-          "Image": "actionDefaultImage",
+          "FontSize": "14",
+          "Image": "actionClearImage",
           "TitleAlignment": "middle"
         }
       ],
@@ -43,12 +43,12 @@
       "UUID": "com.dddice.app.clear_roll_history"
     },
     {
-      "Icon": "actionIcon",
+      "Icon": "actionPickUpIcon",
       "Name": "Pick Up Everyone's Dice",
       "States": [
         {
-          "FontSize": "16",
-          "Image": "actionDefaultImage",
+          "FontSize": "14",
+          "Image": "actionPickUpImage",
           "TitleAlignment": "middle"
         }
       ],
@@ -57,12 +57,12 @@
       "UUID": "com.dddice.app.pick_up_all"
     },
     {
-      "Icon": "actionIcon",
+      "Icon": "actionChangeRoomBackgroundIcon",
       "Name": "Change Room Background",
       "States": [
         {
-          "FontSize": "16",
-          "Image": "actionDefaultImage",
+          "FontSize": "14",
+          "Image": "actionChangeRoomBackgroundImage",
           "TitleAlignment": "middle"
         }
       ],

@@ -10,8 +10,8 @@ function isValuesString(values): values is string {
   return typeof values === 'string';
 }
 
-export class QuickRoll extends AbstractAction {
-  public static type = 'com.dddice.app.macro';
+export class Macro extends AbstractAction {
+  public type = 'com.dddice.app.macro';
 
   async onKeyUp(context, { settings }: { settings: ISettings }) {
     try {

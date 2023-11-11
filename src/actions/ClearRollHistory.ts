@@ -19,31 +19,24 @@ async function urlToFile(url, filename) {
   return new File([buf], filename, { type: mimeType });
 }
 
-export class BackgroundChange extends AbstractAction {
-  public type = 'com.dddice.app.change_room_background';
+export class ClearRollHistory extends AbstractAction {
+  public type = 'com.dddice.app.clear_chat';
 
   async onKeyUp(context, { settings }: { settings: ISettings }) {
     try {
-      const file = await urlToFile(settings.background.fileName, settings.background.fileName);
-
-      const response = await this.api.room.updateBackground(settings.room, file);
-
-      if (response.data.type === 'error') {
+      const response = await this.api.room.clearRollHistory(settings.room);
+      if (response.data?.type === 'error') {
+        console.error(response.data.error);
         this.elgatoBus.showAlert(context);
       }
       this.elgatoBus.showOk(context);
     } catch (e) {
+      console.error(e);
       this.elgatoBus.showAlert(context);
     }
   }
 
   async setImage(context, { settings }: { settings: ISettings }, globalSettings) {
-    if (globalSettings) {
-      try {
-        this.elgatoBus.setImage(context, settings.background?.fileName);
-      } catch (e) {
-        this.elgatoBus.setImage(context, '');
-      }
-    }
+    return true;
   }
 }

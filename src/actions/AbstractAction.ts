@@ -8,7 +8,7 @@ import { ISettings } from '~src/types';
 export abstract class AbstractAction {
   protected api: ThreeDDiceAPI;
   protected elgatoBus: ElgatoBus;
-  public static type;
+  public type;
 
   constructor(elgatoBus) {
     this.elgatoBus = elgatoBus;

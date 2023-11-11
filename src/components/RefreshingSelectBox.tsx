@@ -21,6 +21,9 @@ const RefreshingSelectBox = ({
   isRefreshing,
   onRefresh,
 }: RefreshingSelectBoxProps) => {
+  if (current === undefined) {
+    onChange({ target: { value: items[0].id } });
+  }
   return (
     <div className="sdpi-item">
       <div className="sdpi-item-label">{label}</div>

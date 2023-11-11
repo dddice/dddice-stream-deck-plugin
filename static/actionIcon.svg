@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+        width="24"
+        height="24"
+        viewBox="0 0 76.624992 76.624992"
+        version="1.1"
+        id="svg5"
+        xmlns="http://www.w3.org/2000/svg">
+    <defs
+            id="defs2">
+        <marker
+                style="overflow:visible"
+                id="Arrow2Sstart"
+                refX="0"
+                refY="0"
+                orient="auto">
+            <path
+                    transform="matrix(0.3,0,0,0.3,-0.69,0)"
+                    d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+                    style="fill:#FFFFFF;fill-rule:evenodd;stroke:#FFFFFF;stroke-width:0.625;stroke-linejoin:round"
+                    id="path1000"/>
+        </marker>
+        <marker
+                style="overflow:visible"
+                id="Arrow2Sstart-6"
+                refX="0"
+                refY="0"
+                orient="auto"
+        >
+            <path
+                    transform="matrix(0.3,0,0,0.3,-0.69,0)"
+                    d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+                    style="fill:#FFFFFF;fill-rule:evenodd;stroke:#FFFFFF;stroke-width:0.625;stroke-linejoin:round"
+                    id="path1000-7"/>
+        </marker>
+    </defs>
+    <g
+
+            id="layer5"
+
+            style="display:inline"
+            transform="translate(-0.76546319,-0.48624577)">
+        <g
+                fill="none"
+                id="g4109"
+                transform="matrix(2.4758196,1.4294151,-1.4294151,2.4758196,26.942797,-8.2837149)"
+        >
+            <path
+                    stroke="currentColor"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="m 21.024937,7.6453175 v 7.9859995 a 2,2 0 0 1 -1.006,1.735 l -7,4.007 a 2.003,2.003 0 0 1 -1.988,0 l -7,-4.007 a 2,2 0 0 1 -1.006,-1.735 V 7.6453175 a 2,2 0 0 1 1.006,-1.735 l 7,-4.007 a 2.003,2.003 0 0 1 1.988,0 l 7,4.007 a 2,2 0 0 1 1.006,1.735 z m -17.71,-1.037 4.21,2.43 m 13.21,-2.43 -4.21,2.43 m 4.08,7.7999995 h -17.16 m 8.34,-15.1699995 -8.56,14.8099995 m 9.04,-14.8099995 8.56,14.8099995"
+                    id="path4105"
+                    style="stroke:#FFFFFF;stroke-width:1.76056;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+            <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="m 12.024937,16.834317 -4.5,-7.7939995 h 9 z m 0,0.004 v 4.8"
+                    id="path4107"
+                    style="stroke:#FFFFFF;stroke-width:1.76056;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+        </g>
+    </g>
+    <g
+
+            id="layer7"
+
+            style="display:inline"
+            transform="translate(-0.76546319,-0.48624577)">
+        <path
+                style="fill:none;stroke:#FFFFFF;stroke-width:5.09218;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2Sstart)"
+                d="M 66.172461,63.429801 25.37556,63.226228"
+                id="path4275-7-7"
+        />
+    </g>
+    <g
+
+            id="layer8"
+
+            style="display:inline"
+            transform="translate(-0.76546319,-0.48624577)">
+        <path
+                style="display:inline;fill:#FFFFFF;fill-opacity:1;stroke:#FFFFFF;stroke-width:5.09218;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2Sstart-6)"
+                d="M 4.803486,27.939296 25.38286,63.299337"
+                id="path4275-7-7-3"
+        />
+    </g>
+</svg>

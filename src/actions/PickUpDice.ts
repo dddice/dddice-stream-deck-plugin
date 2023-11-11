@@ -19,15 +19,12 @@ async function urlToFile(url, filename) {
   return new File([buf], filename, { type: mimeType });
 }
 
-export class BackgroundChange extends AbstractAction {
-  public type = 'com.dddice.app.change_room_background';
+export class PickUpDice extends AbstractAction {
+  public type = 'com.dddice.app.pick_up';
 
   async onKeyUp(context, { settings }: { settings: ISettings }) {
     try {
-      const file = await urlToFile(settings.background.fileName, settings.background.fileName);
-
-      const response = await this.api.room.updateBackground(settings.room, file);
-
+      const response = await this.api.room.updateRolls(settings.room, { is_cleared: true });
       if (response.data.type === 'error') {
         this.elgatoBus.showAlert(context);
       }
@@ -38,12 +35,6 @@ export class BackgroundChange extends AbstractAction {
   }
 
   async setImage(context, { settings }: { settings: ISettings }, globalSettings) {
-    if (globalSettings) {
-      try {
-        this.elgatoBus.setImage(context, settings.background?.fileName);
-      } catch (e) {
-        this.elgatoBus.setImage(context, '');
-      }
-    }
+    return true;
   }
 }

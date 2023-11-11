@@ -1,29 +1,22 @@
 /** @format */
 
-import classNames from 'classnames';
 import { ThreeDDiceAPI, MissingDieError } from 'dddice-js';
 import { parseRollEquation } from 'dddice-js';
 import { debounce } from 'lodash-es';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Tooltip } from 'react-tooltip';
 
-import ElgatoPropertyInspectorBus from '../ElgatoPropertyInspectorBus';
-import RefreshIcon from '../assets/arrows-diagrams-arrow-rotate-1.svg';
-import LogoutIcon from '../assets/interface-essential-exit-door-log-out-1.svg';
-import KeyIcon from '../assets/interface-essential-key-4.svg';
-import LoadingIcon from '../assets/loading.svg';
-import HelpIcon from '../assets/support-help-question-question-square.svg';
-import ElgatoBus from '../elgatoBus';
-import { IGlobalSettings, ISettings } from '../types';
-
-import ApiKeyInput from './ApiKeyInput';
-
+import ElgatoPropertyInspectorBus from '~src/ElgatoPropertyInspectorBus';
+import LogoutIcon from '~src/assets/interface-essential-exit-door-log-out-1.svg';
+import LoadingIcon from '~src/assets/loading.svg';
+import HelpIcon from '~src/assets/support-help-question-question-square.svg';
 import FileInput from '~src/components/FileInput';
 import { Login } from '~src/components/Login';
 import RefreshingSelectBox from '~src/components/RefreshingSelectBox';
 import TextInputWithErrors from '~src/components/TextInputWithErrors';
 import TextInputWithHelp from '~src/components/TextInputWithHelp';
-import { dataUrl, fileToDataUrl } from '~src/dataUrl';
+import ElgatoBus from '~src/elgatoBus';
+import { IGlobalSettings, ISettings } from '~src/types';
 
 const PropertyInspector = () => {
   const elgatoBus = useRef<ElgatoBus>(null);
@@ -37,7 +30,6 @@ const PropertyInspector = () => {
   const [isThemesLoading, setIsThemesLoading] = useState(false);
   const [isRoomsLoading, setIsRoomsLoading] = useState(false);
   const api = useRef<ThreeDDiceAPI>();
-  const equationRef = useRef();
   const [action, setAction] = useState();
   const [rooms, setRooms] = useState([]);
   const [themes, setThemes] = useState([]);
@@ -80,13 +72,6 @@ const PropertyInspector = () => {
       elgatoBus.current.connect();
     };
   }, []);
-
-  /*
-   * set validity of the equation field
-   */
-  useEffect(() => {
-    equationRef.current?.setCustomValidity(equationErrors);
-  }, [equationErrors]);
 
   const setSetting = (key, value) => {
     setSettings(settings => {
@@ -162,7 +147,7 @@ const PropertyInspector = () => {
 
         try {
           setLoadingMessage('Logging in');
-          await api.current.user.get().data;
+          api.current.userUuid = (await api.current.user.get()).data.uuid;
         } catch (error) {
           setError('Problem connecting with dddice');
           return;
@@ -190,18 +175,20 @@ const PropertyInspector = () => {
   }, [globalSettings.apiKey]);
 
   const validateEquation = async (equation, diceTheme, allThemes) => {
-    const fullTheme = allThemes.find(theme => theme.id === diceTheme);
-    try {
-      parseRollEquation(`${equation}`, fullTheme);
-    } catch (e: unknown) {
-      setEquationErrors(
-        <div className="flex flex-col">
-          <div>{(e as MissingDieError).message}</div>
-          {(e as MissingDieError).available_dice && (
-            <div>{(e as MissingDieError).available_dice}</div>
-          )}
-        </div>,
-      );
+    if (equation) {
+      const fullTheme = allThemes.find(theme => theme.id === diceTheme);
+      try {
+        parseRollEquation(`${equation}`, fullTheme);
+      } catch (e: unknown) {
+        setEquationErrors(
+          <div className="flex flex-col">
+            <div>{(e as MissingDieError).message}</div>
+            {(e as MissingDieError).available_dice && (
+              <div>{(e as MissingDieError).available_dice}</div>
+            )}
+          </div>,
+        );
+      }
     }
   };
   const debouncedValidateEquation = useCallback(debounce(validateEquation, 500), []);
@@ -218,7 +205,7 @@ const PropertyInspector = () => {
   const onChangeTheme = useCallback(
     async event => {
       setSetting('diceTheme', event.target.value);
-      equationRef.current.setCustomValidity('');
+      //equationRef.current.setCustomValidity('');
       setEquationErrors(null);
       await validateEquation(settings.rollEquation, event.target.value, themes);
     },
@@ -325,9 +312,23 @@ const PropertyInspector = () => {
           isRefreshing={isRoomsLoading}
           onRefresh={refreshRooms}
         />
-      </>
-    ),
-  }[action];
+      );
+      break;
+    case 'com.dddice.app.clear_roll_history':
+      actionComponents = (
+        <RefreshingSelectBox
+          label={'Room'}
+          onChange={event => setSetting('room', event.target.value)}
+          items={rooms
+            .filter(r => r.user.uuid === api.current?.userUuid)
+            .map(r => ({ id: r.slug, name: r.name }))}
+          current={settings.room}
+          isRefreshing={isRoomsLoading}
+          onRefresh={refreshRooms}
+        />
+      );
+      break;
+  }
 
   return (
     <>
