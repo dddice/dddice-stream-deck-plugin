@@ -23,17 +23,12 @@ export class Macro extends AbstractAction {
         values,
       );
 
-      const response = await this.api.roll.create(dice, {
+      await this.api.roll.create(dice, {
         room: settings.room,
         operator,
         // turn any falsy into undefined. Other falsy will cause 400 in backend
         label: settings.label ? settings.label : undefined,
       });
-
-      if (response.data.type === 'error') {
-        console.error(response.data.data);
-        this.elgatoBus.showAlert(context);
-      }
       this.elgatoBus.showOk(context);
     } catch (e) {
       console.error(e);

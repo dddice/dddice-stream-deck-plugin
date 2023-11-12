@@ -11,8 +11,8 @@ const FileInput = ({ label, onChange, value }: FileInputProps) => {
   const id = `dddice-file-picker${label.replace(' ', '-')}`;
   return (
     <div className="sdpi-item">
-      <div className="sdpi-item-label">{label}</div>
-      <div className="sdpi-item-group file" id="filepickergroup">
+      <div className="sdpi-item-label flex items-center justify-end">{label}</div>
+      <div className="sdpi-item-group file">
         <input
           className="sdpi-item-value"
           type="file"

@@ -13,11 +13,10 @@ const TextInputWithErrors = ({ onChange, value, errors }: TexInputWithErrorsProp
   return (
     <>
       <div className="sdpi-item">
-        <div className="sdpi-item-label">Roll Equation</div>
+        <div className="sdpi-item-label flex items-center justify-end">Roll Equation</div>
         <input
           type="text"
           className="sdpi-item-value"
-          id="dddice-rollEquation"
           ref={ref}
           onChange={event => {
             ref.current.setCustomValidity('');

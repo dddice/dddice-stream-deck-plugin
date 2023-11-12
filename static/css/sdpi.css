@@ -96,10 +96,6 @@ hr2 {
   margin-right: 16px;
 }
 
-.sdpi-item-value,
-option,
-input,
-select,
 button {
   font-size: 10pt;
   font-weight: var(--sdpi-fontweight);
@@ -206,6 +202,7 @@ select {
 }
 
 label.sdpi-file-label,
+input[type='text'],
 input[type='button'],
 input[type='submit'],
 input[type='reset'],

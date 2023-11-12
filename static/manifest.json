@@ -5,7 +5,7 @@
       "Name": "Quick Roll Macro",
       "States": [
         {
-          "FontSize": "14",
+          "FontSize": "10",
           "Image": "actionMacroImage",
           "TitleAlignment": "bottom"
         }
@@ -19,7 +19,7 @@
       "Name": "Pick Up Dice",
       "States": [
         {
-          "FontSize": "14",
+          "FontSize": "10",
           "Image": "actionPickUpImage",
           "TitleAlignment": "middle"
         }
@@ -29,26 +29,12 @@
       "UUID": "com.dddice.app.pick_up"
     },
     {
-      "Icon": "actionClearIcon",
-      "Name": "Clear Roll History",
+      "Icon": "actionClearBoardIcon",
+      "Name": "Clear Table (GM only)",
       "States": [
         {
-          "FontSize": "14",
-          "Image": "actionClearImage",
-          "TitleAlignment": "middle"
-        }
-      ],
-      "SupportedInMultiActions": false,
-      "Tooltip": "Clear the roll history of a room (GM only)",
-      "UUID": "com.dddice.app.clear_roll_history"
-    },
-    {
-      "Icon": "actionPickUpIcon",
-      "Name": "Pick Up Everyone's Dice",
-      "States": [
-        {
-          "FontSize": "14",
-          "Image": "actionPickUpImage",
+          "FontSize": "10",
+          "Image": "actionClearBoardImage",
           "TitleAlignment": "middle"
         }
       ],
@@ -57,11 +43,26 @@
       "UUID": "com.dddice.app.pick_up_all"
     },
     {
-      "Icon": "actionChangeRoomBackgroundIcon",
-      "Name": "Change Room Background",
+      "Icon": "actionClearRollHistoryIcon",
+      "Name": "Clear Roll History (GM only)",
       "States": [
         {
-          "FontSize": "14",
+          "FontSize": "10",
+          "Image": "actionClearRollHistoryImage",
+          "TitleAlignment": "middle"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Clear the roll history of a room (GM only)",
+      "UUID": "com.dddice.app.clear_roll_history"
+    },
+
+    {
+      "Icon": "actionChangeRoomBackgroundIcon",
+      "Name": "Change Room Background (GM only)",
+      "States": [
+        {
+          "FontSize": "10",
           "Image": "actionChangeRoomBackgroundImage",
           "TitleAlignment": "middle"
         }

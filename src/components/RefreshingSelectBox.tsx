@@ -7,7 +7,7 @@ import { RefreshIcon } from '~src/IconLibrary';
 
 interface RefreshingSelectBoxProps {
   onChange(event);
-  items: { id; name: string }[];
+  items: { id: string; name: string; disabled: boolean }[];
   current: string;
   isRefreshing: boolean;
   onRefresh;
@@ -26,17 +26,11 @@ const RefreshingSelectBox = ({
   }
   return (
     <div className="sdpi-item">
-      <div className="sdpi-item-label">{label}</div>
-      <select
-        className="sdpi-item-value select"
-        id="dddice-diceTheme"
-        onChange={onChange}
-        value={current}
-        required
-      >
-        {items.map(theme => (
-          <option value={theme.id} key={theme.id}>
-            {theme.name}
+      <div className="sdpi-item-label flex items-center justify-end">{label}</div>
+      <select className="sdpi-item-value select" onChange={onChange} value={current} required>
+        {items.map(item => (
+          <option value={item.id} key={item.id} disabled={item.disabled}>
+            {item.name}
           </option>
         ))}
       </select>

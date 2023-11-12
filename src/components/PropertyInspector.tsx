@@ -146,7 +146,7 @@ const PropertyInspector = () => {
         setIsLoading(true);
 
         try {
-          setLoadingMessage('Logging in');
+          setLoadingMessage('Connecting to dddice');
           api.current.userUuid = (await api.current.user.get()).data.uuid;
         } catch (error) {
           setError('Problem connecting with dddice');
@@ -314,14 +314,32 @@ const PropertyInspector = () => {
         />
       );
       break;
+    case 'com.dddice.app.pick_up_all':
+      actionComponents = (
+        <RefreshingSelectBox
+          label={'Room'}
+          onChange={event => setSetting('room', event.target.value)}
+          items={rooms.map(r => ({
+            id: r.slug,
+            name: r.name,
+            disabled: r.user.uuid !== api.current?.userUuid,
+          }))}
+          current={settings.room}
+          isRefreshing={isRoomsLoading}
+          onRefresh={refreshRooms}
+        />
+      );
+      break;
     case 'com.dddice.app.clear_roll_history':
       actionComponents = (
         <RefreshingSelectBox
           label={'Room'}
           onChange={event => setSetting('room', event.target.value)}
-          items={rooms
-            .filter(r => r.user.uuid === api.current?.userUuid)
-            .map(r => ({ id: r.slug, name: r.name }))}
+          items={rooms.map(r => ({
+            id: r.slug,
+            name: r.name,
+            disabled: r.user.uuid !== api.current?.userUuid,
+          }))}
           current={settings.room}
           isRefreshing={isRoomsLoading}
           onRefresh={refreshRooms}

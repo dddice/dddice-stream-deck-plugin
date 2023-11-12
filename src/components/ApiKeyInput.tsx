@@ -23,12 +23,11 @@ const ApiKeyInput = ({ onSuccess }: ApiKeyInputProps) => {
   return (
     <form onSubmit={onSubmit}>
       <div type="select" className="sdpi-item">
-        <div className="sdpi-item-label">API Key</div>
+        <div className="sdpi-item-label flex items-center justify-end">API Key</div>
         <input
           disabled={false}
           type="password"
           className="sdpi-item-value mr-2 min-w-6"
-          id="dddice-apiKey"
           name="apiKey"
         />
         <button formAction="submit" className="flex flex-row items-center justify-center mr-6">

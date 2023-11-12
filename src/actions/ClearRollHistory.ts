@@ -24,12 +24,7 @@ export class ClearRollHistory extends AbstractAction {
 
   async onKeyUp(context, { settings }: { settings: ISettings }) {
     try {
-      const response = await this.api.room.clearRollHistory(settings.room);
-      if (response.data?.type === 'error') {
-        console.error(response.data.error);
-        this.elgatoBus.showAlert(context);
-      }
-      this.elgatoBus.showOk(context);
+      await this.api.room.deleteRolls(settings.room);
     } catch (e) {
       console.error(e);
       this.elgatoBus.showAlert(context);

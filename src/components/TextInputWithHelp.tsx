@@ -19,14 +19,8 @@ const TextInputWithHelp = ({ onChange, value, label, tooltipContent }: TextInput
         {tooltipContent}
       </Tooltip>
       <div className="sdpi-item">
-        <div className="sdpi-item-label">{label}</div>
-        <input
-          type="text"
-          className="sdpi-item-value select"
-          id="dddice-label"
-          onInput={onChange}
-          value={value}
-        />
+        <div className="sdpi-item-label flex items-center justify-end">{label}</div>
+        <input type="text" className="sdpi-item-value select" onInput={onChange} value={value} />
         <button
           className="flex flex-row items-center justify-center ml-2 w-[23px]"
           data-tooltip-id={tooltipId}
