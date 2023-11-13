@@ -22,7 +22,7 @@ const RefreshingSelectBox = ({
   onRefresh,
 }: RefreshingSelectBoxProps) => {
   if (current === undefined) {
-    onChange({ target: { value: items[0].id } });
+    onChange({ target: { value: items.find(i => !i.disabled).id } });
   }
   return (
     <div className="sdpi-item">

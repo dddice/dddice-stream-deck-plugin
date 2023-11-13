@@ -2,8 +2,8 @@
 
 import { ThreeDDiceAPI } from 'dddice-js';
 
+import ElgatoBus from './ElgatoBus';
 import ElgatoPluginBus from './ElgatoPluginBus';
-import ElgatoBus from './elgatoBus';
 
 import { AbstractAction } from '~src/actions/AbstractAction';
 import { ChangeRoomBackground } from '~src/actions/ChangeRoomBackground';

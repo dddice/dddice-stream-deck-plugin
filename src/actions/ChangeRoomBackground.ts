@@ -1,15 +1,7 @@
 /** @format */
 
-import { parseRollEquation, ThreeDDiceAPI } from '~node_modules/dddice-js';
-import ElgatoBus from '~src/ElgatoBus';
 import { AbstractAction } from '~src/actions/AbstractAction';
-import { dataUrl, fileToDataUrl } from '~src/dataUrl';
 import { ISettings } from '~src/types';
-
-function isValuesString(values): values is string {
-  return typeof values === 'string';
-}
-
 async function urlToFile(url, filename) {
   const mimeType = (url.match(/^data:([^;]+);/) || '')[1];
 

@@ -6,6 +6,7 @@ import { debounce } from 'lodash-es';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Tooltip } from 'react-tooltip';
 
+import ElgatoBus from '~src/ElgatoBus';
 import ElgatoPropertyInspectorBus from '~src/ElgatoPropertyInspectorBus';
 import LogoutIcon from '~src/assets/interface-essential-exit-door-log-out-1.svg';
 import LoadingIcon from '~src/assets/loading.svg';
@@ -15,7 +16,6 @@ import { Login } from '~src/components/Login';
 import RefreshingSelectBox from '~src/components/RefreshingSelectBox';
 import TextInputWithErrors from '~src/components/TextInputWithErrors';
 import TextInputWithHelp from '~src/components/TextInputWithHelp';
-import ElgatoBus from '~src/elgatoBus';
 import { IGlobalSettings, ISettings } from '~src/types';
 
 const PropertyInspector = () => {

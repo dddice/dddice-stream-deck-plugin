@@ -5,9 +5,16 @@
   "repository": "git@github.com:dddice/dddice-stream-deck-plugin.git",
   "author": "dddice <developers@dddice.com>",
   "browserslist": "> 0.5%, last 2 versions, not dead",
+  "scripts": {
+    "build": "parcel build --target default --dist-dir=com.dddice.app.sdPlugin --public-url ./",
+    "lint": "eslint src --fix",
+    "start": "parcel watch --target default --dist-dir=com.dddice.app.sdPlugin --public-url ./",
+    "dddice-js": "xcopy \\\\wsl$\\Ubuntu\\home\\celestebloodreign\\dddice\\www\\public\\js node_modules\\dddice-js\\ /y && xcopy \\\\wsl$\\Ubuntu\\home\\celestebloodreign\\dddice\\www\\public\\js\\types\\js\\@dice\\ node_modules\\dddice-js\\types /y",
+    "clean": "rm -rf .parcel-cache && rm -rf com.dddice.app.sdPlugin/.*"
+  },
   "source": [
     "src/dddice.ts",
-    "src/propertyInspector.tsx",
+    "src/PropertyInspector.tsx",
     "src/dddice.css"
   ],
   "targets": {
@@ -18,26 +25,9 @@
       }
     }
   },
-  "watch": {
-    "build": {
-      "patterns": [
-        "src",
-        "static"
-      ],
-      "extensions": "ts,tsx,html,css,png",
-      "quiet": false
-    }
-  },
-  "scripts": {
-    "build": "parcel build --target default --dist-dir=com.dddice.app.sdPlugin --public-url ./",
-    "lint": "eslint src/*.ts*",
-    "start": "parcel watch --target default --dist-dir=com.dddice.app.sdPlugin --public-url ./",
-    "dddice-js": "xcopy \\\\wsl$\\Ubuntu\\home\\celestebloodreign\\dddice\\www\\public\\js node_modules\\dddice-js\\ /y && xcopy \\\\wsl$\\Ubuntu\\home\\celestebloodreign\\dddice\\www\\public\\js\\types\\js\\@dice\\ node_modules\\dddice-js\\types /y",
-    "clean": "rm -rf .parcel-cache"
-  },
   "dependencies": {
     "classnames": "^2.3.2",
-    "dddice-js": "^0.17.16",
+    "dddice-js": "^0.17.23",
     "lodash-es": "^4.17.21",
     "react-tooltip": "^5.22.0"
   },
@@ -57,13 +47,13 @@
     "events": "^3.3.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.1.1",
-    "npm-watch": "^0.11.0",
     "parcel": "^2.10.2",
     "parcel-reporter-static-files-copy": "^1.4.0",
     "prettier": "^2.8.0",
     "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "shx": "^0.3.4",
     "stream-browserify": "^3.0.0",
     "tailwindcss": "^3.1.8",
     "typescript": "^4.9.3"

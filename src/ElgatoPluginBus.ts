@@ -1,5 +1,5 @@
 /** @format */
-import ElgatoBus from './elgatoBus';
+import ElgatoBus from './ElgatoBus';
 
 const DestinationEnum = Object.freeze({
   HARDWARE_AND_SOFTWARE: 0,

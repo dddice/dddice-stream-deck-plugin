@@ -1,7 +1,6 @@
 /** @format */
 
-import { parseRollEquation, ThreeDDiceAPI } from '~node_modules/dddice-js';
-import ElgatoBus from '~src/ElgatoBus';
+import { parseRollEquation } from '~node_modules/dddice-js';
 import { AbstractAction } from '~src/actions/AbstractAction';
 import { dataUrl } from '~src/dataUrl';
 import { ISettings } from '~src/types';

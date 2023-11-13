@@ -1,6 +1,6 @@
 /** @format */
 
-import ElgatoBus from './elgatoBus';
+import ElgatoBus from './ElgatoBus';
 
 export default class ElgatoPropertyInspectorBus extends ElgatoBus {
   private actionInfo: Record<string, string>;
