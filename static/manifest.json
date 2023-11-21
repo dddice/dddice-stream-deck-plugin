@@ -56,7 +56,6 @@
       "Tooltip": "Clear the roll history of a room (GM only)",
       "UUID": "com.dddice.app.clear_roll_history"
     },
-
     {
       "Icon": "actionChangeRoomBackgroundIcon",
       "Name": "Change Room Background (GM only)",
@@ -95,5 +94,5 @@
     "MinimumVersion": "4.1"
   },
   "URL": "https://www.dddice.com/",
-  "Version": "0.2.0"
+  "Version": "0.3.0"
 }

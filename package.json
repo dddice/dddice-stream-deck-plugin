@@ -1,6 +1,6 @@
 {
   "name": "dddice-stream-deck-plugin",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Roll 3D digital dice from your steam deck.",
   "repository": "git@github.com:dddice/dddice-stream-deck-plugin.git",
   "author": "dddice <developers@dddice.com>",
