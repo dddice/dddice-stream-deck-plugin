@@ -7,8 +7,17 @@ Use your Elgato Stream Deck to send rolls at a push of a button to dddice.
 ### Quick Roll Macros
 Use a quick roll macro action to quickly roll dice, as represented by a dice equation, to a configured room. All dice will be rolled in the same theme
 
-### Dice Buttons (coming soon)
-Create buttons on your stream deck that represent dice you might want to roll. Ex a Black d20. Press the dice you want to roll, then press the "Roll" button to throw them all 
+### Pick up your dice button
+Use a button from your stream deck to pick up all the dice you have rolled
+
+### Clear table button (GM only)
+A GM can use this button to clear all the dice off the table regardless of who rolled them
+
+### Clear roll history (GM only)
+A GM can use this button to delete all the roll result messages from the roll log
+
+### Change room background (GM only)
+Bind images to buttons. When you press the button the background of your room will be switched to the image on the button.
 
 ## Installation
 
