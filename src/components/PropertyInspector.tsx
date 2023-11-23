@@ -62,6 +62,7 @@ const PropertyInspector = () => {
       setIsLoading(true);
 
       elgatoBus.current.on('didReceiveGlobalSettings', (_context, { settings: globalSettings }) => {
+        setIsLoading(false);
         setGlobalSettings(globalSettings);
         // check the equation for errors on mount
         if (settings?.rollEquation && settings?.diceTheme && globalSettings.themes) {
@@ -171,6 +172,8 @@ const PropertyInspector = () => {
       };
 
       load();
+    } else {
+      setIsLoading(false);
     }
   }, [globalSettings.apiKey]);
 
