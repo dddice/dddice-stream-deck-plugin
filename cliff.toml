@@ -26,9 +26,13 @@ body = """
 trim = true
 # changelog footer
 footer = """
-Get the plugin from the StreamDeck plugin store or at 👇
+Get the plugin from the Elgato Marketplace at 👇
 
-https://apps.elgato.com/plugins/com.dddice.app
+https://marketplace.elgato.com/product/dddice-5ad0839b-a96a-4b4e-8c2d-8a52f73a2c26
+
+Or you can download it from our GitHub page at 👇
+https://github.com/dddice/dddice-stream-deck-plugin/releases
+
 """
 
 [git]
