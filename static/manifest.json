@@ -94,5 +94,6 @@
     "MinimumVersion": "4.1"
   },
   "URL": "https://www.dddice.com/",
-  "Version": "0.3.3"
+  "Version": "0.3.3",
+  "UUID": "com.dddice.app"
 }
