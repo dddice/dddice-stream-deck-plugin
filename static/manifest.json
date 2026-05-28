@@ -10,7 +10,7 @@
           "TitleAlignment": "bottom"
         }
       ],
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "Tooltip": "One button press to quick roll a full dice equation",
       "UUID": "com.dddice.app.macro"
     },
@@ -24,7 +24,7 @@
           "TitleAlignment": "middle"
         }
       ],
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "Tooltip": "Press to pick you dice up",
       "UUID": "com.dddice.app.pick_up"
     },
@@ -38,7 +38,7 @@
           "TitleAlignment": "middle"
         }
       ],
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "Tooltip": "Pick up all dice off the table (GM only)",
       "UUID": "com.dddice.app.pick_up_all"
     },
@@ -52,7 +52,7 @@
           "TitleAlignment": "middle"
         }
       ],
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "Tooltip": "Clear the roll history of a room (GM only)",
       "UUID": "com.dddice.app.clear_roll_history"
     },
@@ -66,7 +66,7 @@
           "TitleAlignment": "middle"
         }
       ],
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "Tooltip": "Change the background of your room at the press of a button (GM only)",
       "UUID": "com.dddice.app.change_room_background"
     }
