@@ -89,9 +89,9 @@
     }
   ],
   "PropertyInspectorPath": "settings.html",
-  "SDKVersion": 2,
+  "SDKVersion": 3,
   "Software": {
-    "MinimumVersion": "4.1"
+    "MinimumVersion": "6.9"
   },
   "URL": "https://www.dddice.com/",
   "Version": "0.3.3",
